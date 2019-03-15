@@ -39,7 +39,7 @@ class CameraFilters {
 		return device
 	}
 	
-	static func lightFilter(_ device: AVCaptureDevice, over: Bool = true, enabled: Bool = true) -> AVCaptureDevice {
+	static func lightFilter(_ device: AVCaptureDevice, over: Bool = true, enabled: Bool = true) {
 		// Using exposure (and maybe light level detection with a blur)
 		
 		do {
@@ -47,18 +47,21 @@ class CameraFilters {
 			
 			if enabled {
 				if over {
-					let addingExposre = CMTime(seconds: 0.2, preferredTimescale: 1)
-					device.setExposureModeCustom(duration: device.exposureDuration + addingExposre, iso: AVCaptureDevice.currentISO, completionHandler: { (CMTime) in
+					dump(device.exposureDuration)
+					device.setExposureModeCustom(duration: device.activeFormat.maxExposureDuration, iso: AVCaptureDevice.currentISO, completionHandler: { (CMTime) in
 						device.unlockForConfiguration()
 					})
 				} else {
 					// act like blind w/ blur and light level detection
+					device.setExposureModeCustom(duration: device.activeFormat.minExposureDuration, iso: AVCaptureDevice.currentISO, completionHandler: { (CMTime) in
+						device.unlockForConfiguration()
+					})
 				}
+			} else {
+				device.exposureMode = .autoExpose
 			}
 		} catch {
 			print("ERROR IN FILTER")
 		}
-		
-		return device
 	}
 }

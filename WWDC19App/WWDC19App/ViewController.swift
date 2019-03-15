@@ -32,6 +32,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	@IBOutlet var cameraView: CameraView!
 	
 	@IBOutlet var filterPickerCollectionView: UICollectionView!
+	@IBOutlet var selectionLabel: UILabel!
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
@@ -42,6 +43,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		
 		filterPickerCollectionView.delegate = self
 		filterPickerCollectionView.dataSource = self
+		
+		selectionLabel.layer.opacity = 0
 		// Do any additional setup after loading the view, typically from a nib.
 	}
 
@@ -77,6 +80,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 
 	func setupSession() {
 		videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .unspecified)
+		
+		// Max frame rate
 		var format: AVCaptureDevice.Format?
 		var range: AVFrameRateRange?
 		for f in videoDevice.formats {
@@ -99,7 +104,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 			}
 		}
 		
-		//CameraFilters.distanceFilter(videoDevice)
 		videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice!)
 		if videoDeviceInput != nil {
 			if session.canAddInput(videoDeviceInput) {
@@ -162,6 +166,15 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	}
 	
 	@objc func tapRecognizer(_ sender: UITapGestureRecognizer?) {
+		selectionLabel.text = sender?.name?.uppercased()
+		UIView.animate(withDuration: 0.2, animations: {
+			self.selectionLabel.alpha = 1
+		})
+		DispatchQueue.main.asyncAfter(deadline: .now() + 1.3, execute: {
+			UIView.animate(withDuration: 0.2, animations: {
+				self.selectionLabel.alpha = 0
+			})
+		})
 		session.beginConfiguration()
 		switch sender?.name {
 		case "Far-Sighted":
@@ -192,9 +205,31 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 			}
 			CameraFilters.distanceFilter(videoDevice, far: false, enabled: true)
 		case "Light Sensitive":
-			_ = CameraFilters.lightFilter(videoDevice, over: true, enabled: true)
+			if state.noDetail {
+				CameraFilters.lightFilter(videoDevice, over: false, enabled: false)
+				state.noDetail = false
+				CameraFilters.lightFilter(videoDevice, over: true, enabled: true)
+				state.lightSensitive = true
+			} else if state.lightSensitive {
+				CameraFilters.lightFilter(videoDevice, over: true, enabled: false)
+				state.lightSensitive = false
+			} else {
+				CameraFilters.lightFilter(videoDevice, over: true, enabled: true)
+				state.lightSensitive = true
+			}
 		case "No Detail":
-			_ = CameraFilters.lightFilter(videoDevice, over: false, enabled: true)
+			if state.lightSensitive {
+				CameraFilters.lightFilter(videoDevice, over: true, enabled: false)
+				state.lightSensitive = false
+				CameraFilters.lightFilter(videoDevice, over: false, enabled: true)
+				state.noDetail = true
+			} else if state.noDetail {
+				CameraFilters.lightFilter(videoDevice, over: false, enabled: false)
+				state.noDetail = false
+			} else {
+				CameraFilters.lightFilter(videoDevice, over: false, enabled: true)
+				state.noDetail = true
+			}
 		case "Fully Colorblind":
 			_ = CameraFilters.colorFilter(videoDevice, full: true, enabled: true)
 		default:

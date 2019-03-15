@@ -14,6 +14,7 @@
 		9224CD1B223ABF73009128A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9224CD19223ABF73009128A3 /* LaunchScreen.storyboard */; };
 		9224CD23223AC11F009128A3 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9224CD22223AC11F009128A3 /* CameraView.swift */; };
 		9224CD25223AD78C009128A3 /* CameraFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9224CD24223AD78C009128A3 /* CameraFilters.swift */; };
+		9224CD28223BF2F0009128A3 /* FilterCollectionViewCelll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9224CD26223BF2F0009128A3 /* FilterCollectionViewCelll.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		9224CD1C223ABF73009128A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9224CD22223AC11F009128A3 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		9224CD24223AD78C009128A3 /* CameraFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFilters.swift; sourceTree = "<group>"; };
+		9224CD26223BF2F0009128A3 /* FilterCollectionViewCelll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCollectionViewCelll.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 			children = (
 				9224CD10223ABF71009128A3 /* AppDelegate.swift */,
 				9224CD12223ABF71009128A3 /* ViewController.swift */,
+				9224CD26223BF2F0009128A3 /* FilterCollectionViewCelll.swift */,
 				9224CD24223AD78C009128A3 /* CameraFilters.swift */,
 				9224CD14223ABF71009128A3 /* Main.storyboard */,
 				9224CD22223AC11F009128A3 /* CameraView.swift */,
@@ -141,6 +144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9224CD28223BF2F0009128A3 /* FilterCollectionViewCelll.swift in Sources */,
 				9224CD25223AD78C009128A3 /* CameraFilters.swift in Sources */,
 				9224CD23223AC11F009128A3 /* CameraView.swift in Sources */,
 				9224CD13223ABF71009128A3 /* ViewController.swift in Sources */,

@@ -67,7 +67,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 
 	func setupSession() {
 		videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .unspecified)
-		CameraFilters.distanceFilter(videoDevice)
+		//CameraFilters.distanceFilter(videoDevice)
 		videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice!)
 		if videoDeviceInput != nil {
 			if session.canAddInput(videoDeviceInput) {
@@ -93,7 +93,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	
 	// MARK: Collection View
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return 5 // TODO
+		return 6 // TODO
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -123,6 +123,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 			cell.tapRecognizer.name = "Default"
 		}
 		
+		cell.imageView.image = UIImage(named: "Light") // TODO: FIX FOR PLAYGROUND
+		cell.imageView.contentMode = .center
 		
 		return cell
 	}

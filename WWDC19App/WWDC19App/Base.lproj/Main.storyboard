@@ -65,6 +65,9 @@
                                             <constraint firstItem="ZQb-Qx-Hgj" firstAttribute="centerX" secondItem="CGQ-wk-fDd" secondAttribute="centerX" id="rRQ-ty-s31"/>
                                         </constraints>
                                         <size key="customSize" width="55" height="55"/>
+                                        <connections>
+                                            <outlet property="imageView" destination="ZQb-Qx-Hgj" id="bXV-if-yGi"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>

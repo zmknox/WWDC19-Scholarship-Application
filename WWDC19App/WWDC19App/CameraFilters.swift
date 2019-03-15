@@ -24,7 +24,7 @@ class CameraFilters {
 					// blur
 				}
 			} else { // disable
-				
+				device.focusMode = .continuousAutoFocus
 			}
 			
 		} catch {

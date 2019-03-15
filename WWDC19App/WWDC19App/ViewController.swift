@@ -11,6 +11,16 @@ import AVFoundation
 
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
+	struct FilterState {
+		var farSighted = false
+		var nearSighted = false
+		var lightSensitive = false
+		var noDetail = false
+		var fullyColorblind = false
+	}
+
+	private var state = FilterState()
+	
 	private let session = AVCaptureSession()
 	
 	private let sessionQueue = DispatchQueue(label: "session queue") // Communicate with the session and other session objects on this queue.
@@ -67,6 +77,28 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 
 	func setupSession() {
 		videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .unspecified)
+		var format: AVCaptureDevice.Format?
+		var range: AVFrameRateRange?
+		for f in videoDevice.formats {
+			for r in f.videoSupportedFrameRateRanges {
+				if range == nil || r.maxFrameRate > range!.maxFrameRate {
+					format = f
+					range = r
+				}
+			}
+		}
+		if format != nil {
+			do {
+				try videoDevice.lockForConfiguration()
+				videoDevice.activeFormat = format!
+				videoDevice.activeVideoMinFrameDuration = (range?.minFrameDuration)!
+				videoDevice.activeVideoMaxFrameDuration = (range?.minFrameDuration)!
+				videoDevice.unlockForConfiguration()
+			} catch {
+				return
+			}
+		}
+		
 		//CameraFilters.distanceFilter(videoDevice)
 		videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice!)
 		if videoDeviceInput != nil {
@@ -133,15 +165,38 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		session.beginConfiguration()
 		switch sender?.name {
 		case "Far-Sighted":
-			CameraFilters.distanceFilter(videoDevice, far: true, enabled: true)
+			if state.nearSighted {
+				CameraFilters.distanceFilter(videoDevice, far: false, enabled: false)
+				state.nearSighted = false
+				CameraFilters.distanceFilter(videoDevice, far: true, enabled: true)
+				state.farSighted = true
+			} else if state.farSighted {
+				CameraFilters.distanceFilter(videoDevice, far: true, enabled: false)
+				state.farSighted = false
+			} else {
+				CameraFilters.distanceFilter(videoDevice, far: true, enabled: true)
+				state.farSighted = true
+			}
 		case "Near-Sighted":
+			if state.farSighted {
+				CameraFilters.distanceFilter(videoDevice, far: true, enabled: false)
+				state.farSighted = false
+				CameraFilters.distanceFilter(videoDevice, far: false, enabled: true)
+				state.nearSighted = true
+			} else if state.nearSighted {
+				CameraFilters.distanceFilter(videoDevice, far: false, enabled: false)
+				state.nearSighted = false
+			} else {
+				CameraFilters.distanceFilter(videoDevice, far: false, enabled: true)
+				state.nearSighted = true
+			}
 			CameraFilters.distanceFilter(videoDevice, far: false, enabled: true)
 		case "Light Sensitive":
-			CameraFilters.lightFilter(videoDevice, over: true, enabled: true)
+			_ = CameraFilters.lightFilter(videoDevice, over: true, enabled: true)
 		case "No Detail":
-			CameraFilters.lightFilter(videoDevice, over: false, enabled: true)
+			_ = CameraFilters.lightFilter(videoDevice, over: false, enabled: true)
 		case "Fully Colorblind":
-			CameraFilters.colorFilter(videoDevice, full: true, enabled: true)
+			_ = CameraFilters.colorFilter(videoDevice, full: true, enabled: true)
 		default:
 			session.commitConfiguration()
 			return

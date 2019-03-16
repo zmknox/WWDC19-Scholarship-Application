@@ -12,6 +12,7 @@ import AVFoundation
 class ViewController: UIViewController {
 
 	struct FilterState {
+		var startedOnce = false
 		var farSighted = false
 		var nearSighted = false
 		var lightSensitive = false
@@ -47,11 +48,9 @@ class ViewController: UIViewController {
 			}
 			
 			settings.isHighResolutionPhotoEnabled = true
-
-			
 			
 			// TODO: Capture Photo with photoOutput, making settings and a delegate for it
-			photoOutput.capturePhoto(with: settings, delegate: <#T##AVCapturePhotoCaptureDelegate#>)
+			self.photoOutput.capturePhoto(with: settings, delegate: self)
 		}
 		
 	}
@@ -72,7 +71,11 @@ class ViewController: UIViewController {
 		sessionQueue.async {
 			switch AVCaptureDevice.authorizationStatus(for: .video) {
 			case .authorized: // The user has previously granted access to the camera.
-				self.setupSession()
+				if self.state.startedOnce {
+					self.session.startRunning()
+				} else {
+					self.setupSession()
+				}
 			case .notDetermined: // The user has not yet been asked for camera access.
 				AVCaptureDevice.requestAccess(for: .video) { granted in
 					if granted {
@@ -127,12 +130,14 @@ class ViewController: UIViewController {
 				session.addInput(videoDeviceInput)
 				
 				photoOutput = AVCapturePhotoOutput()
+				photoOutput.isHighResolutionCaptureEnabled = true
 				guard session.canAddOutput(photoOutput) else { return }
 				session.sessionPreset = .photo
 				session.addOutput(photoOutput)
 				session.commitConfiguration()
 				
 				self.session.startRunning()
+				state.startedOnce = true
 				
 				// filter
 				
@@ -142,6 +147,7 @@ class ViewController: UIViewController {
 				
 			}
 		}
+		
 	}
 	
 	@objc func tapRecognizer(_ sender: UITapGestureRecognizer?) {
@@ -265,7 +271,11 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 
 extension ViewController: AVCapturePhotoCaptureDelegate {
 	func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-		
+		DispatchQueue.main.async {
+			let vc = self.storyboard?.instantiateViewController(withIdentifier: "captured") as? CapturedViewController
+			vc?.photo = photo
+			self.present(vc!, animated: false, completion: nil)
+		}
 	}
 	
 	

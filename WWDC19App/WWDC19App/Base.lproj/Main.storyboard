@@ -109,7 +109,7 @@
         <!--Captured View Controller-->
         <scene sceneID="8hB-Sd-Sy5">
             <objects>
-                <viewController id="e3h-Gv-bXb" customClass="CapturedViewController" customModule="WWDC19App" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="captured" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e3h-Gv-bXb" customClass="CapturedViewController" customModule="WWDC19App" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jyx-bg-DYW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -117,16 +117,17 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Apn-ft-R0X">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zDb-I5-q1r">
-                                <rect key="frame" x="118" y="611" width="138" height="44"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zDb-I5-q1r">
+                                <rect key="frame" x="92" y="589" width="190" height="64"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2e-WV-bgt">
-                                        <rect key="frame" x="47" y="0.0" width="91" height="44"/>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2e-WV-bgt">
+                                        <rect key="frame" x="73" y="0.0" width="117" height="64"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="y2e-WV-bgt" secondAttribute="height" multiplier="91:44" id="0dv-Zc-9L5"/>
-                                            <constraint firstAttribute="height" constant="44" id="Tf5-53-4n1"/>
+                                            <constraint firstAttribute="width" secondItem="y2e-WV-bgt" secondAttribute="height" multiplier="117:64" id="FXr-gj-OHD"/>
+                                            <constraint firstAttribute="height" constant="64" id="GNy-LU-ol8"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                         <state key="normal" title="Save">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
@@ -135,11 +136,12 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sLR-p8-2wZ">
-                                        <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
-                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="sLR-p8-2wZ" secondAttribute="height" multiplier="1:1" id="0Yg-hN-pgJ"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
                                         <state key="normal" title="Back">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
@@ -150,16 +152,27 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="2hX-Ry-DM5"/>
                                     <constraint firstItem="y2e-WV-bgt" firstAttribute="height" secondItem="zDb-I5-q1r" secondAttribute="height" id="Jzy-1e-GmM"/>
+                                    <constraint firstItem="y2e-WV-bgt" firstAttribute="leading" secondItem="sLR-p8-2wZ" secondAttribute="trailing" constant="3" id="SUR-VP-2Ci"/>
+                                    <constraint firstItem="sLR-p8-2wZ" firstAttribute="leading" secondItem="zDb-I5-q1r" secondAttribute="leading" id="T39-Me-xLl"/>
                                     <constraint firstItem="sLR-p8-2wZ" firstAttribute="height" secondItem="y2e-WV-bgt" secondAttribute="height" id="mMJ-Ay-Zcl"/>
+                                    <constraint firstAttribute="trailing" secondItem="y2e-WV-bgt" secondAttribute="trailing" id="wyr-PZ-SDE"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DTb-BC-AFb">
+                                <rect key="frame" x="0.0" y="562" width="375" height="19.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="zDb-I5-q1r" firstAttribute="top" secondItem="DTb-BC-AFb" secondAttribute="bottom" constant="18" id="0BM-Z2-CyH"/>
                             <constraint firstItem="Lgn-kB-fzk" firstAttribute="bottom" secondItem="zDb-I5-q1r" secondAttribute="bottom" constant="12" id="E1o-EF-Egv"/>
+                            <constraint firstItem="DTb-BC-AFb" firstAttribute="width" secondItem="jyx-bg-DYW" secondAttribute="width" id="O23-NJ-3kD"/>
                             <constraint firstItem="Apn-ft-R0X" firstAttribute="height" secondItem="jyx-bg-DYW" secondAttribute="height" id="TsQ-Uw-E4N"/>
+                            <constraint firstItem="zDb-I5-q1r" firstAttribute="centerX" secondItem="Lgn-kB-fzk" secondAttribute="centerX" id="qMn-zi-iq2"/>
                             <constraint firstItem="Apn-ft-R0X" firstAttribute="width" secondItem="jyx-bg-DYW" secondAttribute="width" id="r7S-1Z-DAb"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Lgn-kB-fzk"/>
@@ -168,6 +181,7 @@
                         <outlet property="back" destination="sLR-p8-2wZ" id="u06-hE-fuw"/>
                         <outlet property="imageView" destination="Apn-ft-R0X" id="rC6-Hw-u6W"/>
                         <outlet property="save" destination="y2e-WV-bgt" id="nZ5-Xe-uVD"/>
+                        <outlet property="savedLabel" destination="DTb-BC-AFb" id="jS5-0l-jhv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gb5-eH-M3u" userLabel="First Responder" sceneMemberID="firstResponder"/>

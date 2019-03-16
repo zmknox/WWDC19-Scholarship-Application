@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class ViewController: UIViewController {
 
 	struct FilterState {
 		var farSighted = false
@@ -27,7 +27,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	
 	var videoDevice: AVCaptureDevice!
 	var videoDeviceInput: AVCaptureDeviceInput!
-	var photoOutput: AVCaptureOutput!
+	var photoOutput: AVCapturePhotoOutput!
 	
 	@IBOutlet var cameraView: CameraView!
 	
@@ -38,6 +38,24 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		return .lightContent
 	}
 	
+	@IBOutlet var capture: UIButton!
+	@IBAction func captureButton(_ sender: Any) {
+		sessionQueue.async {
+			var settings = AVCapturePhotoSettings()
+			if self.photoOutput.availablePhotoCodecTypes.contains(.hevc) {
+				settings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
+			}
+			
+			settings.isHighResolutionPhotoEnabled = true
+
+			
+			
+			// TODO: Capture Photo with photoOutput, making settings and a delegate for it
+			photoOutput.capturePhoto(with: settings, delegate: <#T##AVCapturePhotoCaptureDelegate#>)
+		}
+		
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -45,7 +63,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		filterPickerCollectionView.dataSource = self
 		
 		selectionLabel.layer.opacity = 0
-		// Do any additional setup after loading the view, typically from a nib.
+		
+		capture.setImage(UIImage(named: "Capture"), for: .normal) // TODO: FIX FOR PLAYGROUND
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -54,14 +73,12 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 			switch AVCaptureDevice.authorizationStatus(for: .video) {
 			case .authorized: // The user has previously granted access to the camera.
 				self.setupSession()
-				
 			case .notDetermined: // The user has not yet been asked for camera access.
 				AVCaptureDevice.requestAccess(for: .video) { granted in
 					if granted {
 						self.setupSession()
 					}
 				}
-				
 			case .denied: // The user has previously denied access.
 				return
 			case .restricted: // The user can't grant access due to restrictions.
@@ -125,44 +142,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 				
 			}
 		}
-	}
-	
-	// MARK: Collection View
-	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return 6 // TODO
-	}
-	
-	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FilterCell", for: indexPath) as! FilterCollectionViewCelll
-		//Get tap of the cell
-		cell.tapRecognizer.addTarget(self, action: #selector(ViewController.tapRecognizer(_:)))
-		cell.gestureRecognizers = []
-		cell.gestureRecognizers?.append(cell.tapRecognizer)
-		switch indexPath.row { // TODO: Add image assignment here
-		case 0:
-			cell.name = "Far-Sighted"
-			cell.tapRecognizer.name = "Far-Sighted"
-		case 1:
-			cell.name = "Near-Sighted"
-			cell.tapRecognizer.name = "Near-Sighted"
-		case 2:
-			cell.name = "Light Sensitive"
-			cell.tapRecognizer.name = "Light Sensitive"
-		case 3:
-			cell.name = "No Detail"
-			cell.tapRecognizer.name = "No Detail"
-		case 4:
-			cell.name = "Fully Colorblind"
-			cell.tapRecognizer.name = "Fully Colorblind"
-		default:
-			cell.name = "Default"
-			cell.tapRecognizer.name = "Default"
-		}
-		
-		cell.imageView.image = UIImage(named: "Light") // TODO: FIX FOR PLAYGROUND
-		cell.imageView.contentMode = .center
-		
-		return cell
 	}
 	
 	@objc func tapRecognizer(_ sender: UITapGestureRecognizer?) {
@@ -240,3 +219,54 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	}
 }
 
+extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+	// MARK: Collection View
+	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+		return 6 // TODO
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FilterCell", for: indexPath) as! FilterCollectionViewCelll
+		//Get tap of the cell
+		cell.tapRecognizer.addTarget(self, action: #selector(ViewController.tapRecognizer(_:)))
+		cell.gestureRecognizers = []
+		cell.gestureRecognizers?.append(cell.tapRecognizer)
+		switch indexPath.row {
+		case 0:
+			cell.name = "Far-Sighted"
+			cell.tapRecognizer.name = "Far-Sighted"
+			cell.imageView.image = UIImage(named: "Distance") // TODO: FIX FOR PLAYGROUND
+		case 1:
+			cell.name = "Near-Sighted"
+			cell.tapRecognizer.name = "Near-Sighted"
+			cell.imageView.image = UIImage(named: "Distance") // TODO: FIX FOR PLAYGROUND
+		case 2:
+			cell.name = "Light Sensitive"
+			cell.tapRecognizer.name = "Light Sensitive"
+			cell.imageView.image = UIImage(named: "Light") // TODO: FIX FOR PLAYGROUND
+		case 3:
+			cell.name = "No Detail"
+			cell.tapRecognizer.name = "No Detail"
+			cell.imageView.image = UIImage(named: "Light") // TODO: FIX FOR PLAYGROUND
+		case 4:
+			cell.name = "Fully Colorblind"
+			cell.tapRecognizer.name = "Fully Colorblind"
+			cell.imageView.image = UIImage(named: "Colorblind") // TODO: FIX FOR PLAYGROUND
+		default:
+			cell.name = "Default"
+			cell.tapRecognizer.name = "Default"
+		}
+		
+		cell.imageView.contentMode = .center
+		
+		return cell
+	}
+}
+
+extension ViewController: AVCapturePhotoCaptureDelegate {
+	func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+		
+	}
+	
+	
+}

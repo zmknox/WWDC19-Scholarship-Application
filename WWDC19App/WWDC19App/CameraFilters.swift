@@ -47,8 +47,7 @@ class CameraFilters {
 			
 			if enabled {
 				if over {
-					dump(device.exposureDuration)
-					device.setExposureModeCustom(duration: device.activeFormat.maxExposureDuration, iso: AVCaptureDevice.currentISO, completionHandler: { (CMTime) in
+					device.setExposureModeCustom(duration: device.activeFormat.maxExposureDuration, iso: device.activeFormat.maxISO, completionHandler: { (CMTime) in
 						device.unlockForConfiguration()
 					})
 				} else {

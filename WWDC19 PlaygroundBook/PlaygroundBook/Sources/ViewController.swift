@@ -47,7 +47,13 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 	
 	@IBOutlet public var capture: UIButton!
 	@IBAction public func captureButton(_ sender: Any) {
+		let cameraLayerOrientation = cameraView.cameraLayer.connection?.videoOrientation
+
 		sessionQueue.async {
+			if let photoOutputConnection = self.photoOutput.connection(with: .video) {
+				photoOutputConnection.videoOrientation = cameraLayerOrientation!
+			}
+			
 			var settings = AVCapturePhotoSettings()
 			if self.photoOutput.availablePhotoCodecTypes.contains(.hevc) {
 				settings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
@@ -59,6 +65,20 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			self.photoOutput.capturePhoto(with: settings, delegate: self)
 		}
 		
+	}
+	
+	override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.viewWillTransition(to: size, with: coordinator)
+		
+		if let cameraLayerConnection = cameraView.cameraLayer.connection {
+			let deviceOrientation = UIDevice.current.orientation
+			guard let newVideoOrientation = AVCaptureVideoOrientation(deviceOrientation: deviceOrientation),
+				deviceOrientation.isPortrait || deviceOrientation.isLandscape else {
+					return
+			}
+			
+			cameraLayerConnection.videoOrientation = newVideoOrientation
+		}
 	}
 	
 	override public func viewDidLoad() {
@@ -272,6 +292,18 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 		cell.imageView.contentMode = .center
 		
 		return cell
+	}
+}
+
+extension AVCaptureVideoOrientation {
+	init?(deviceOrientation: UIDeviceOrientation) {
+		switch deviceOrientation {
+		case .portrait: self = .portrait
+		case .portraitUpsideDown: self = .portraitUpsideDown
+		case .landscapeLeft: self = .landscapeRight
+		case .landscapeRight: self = .landscapeLeft
+		default: return nil
+		}
 	}
 }
 

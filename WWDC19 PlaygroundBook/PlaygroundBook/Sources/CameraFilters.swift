@@ -6,16 +6,17 @@
 //  Copyright © 2019 Zachary Knox. All rights reserved.
 //
 
+import UIKit
 import AVFoundation
 
 public class CameraFilters {
-	public static func distanceFilter(_ device: AVCaptureDevice, far: Bool = true, enabled: Bool = true) {
+	public static func distanceFilter(_ device: AVCaptureDevice, near: Bool = true, enabled: Bool = true) {
 		// using focus and blur
 		do {
 			try device.lockForConfiguration()
 			
 			if enabled {
-				if far {
+				if near {
 					// focus shift
 					device.setFocusModeLocked(lensPosition: 0.15) { CMTime in
 						device.unlockForConfiguration()
@@ -62,5 +63,38 @@ public class CameraFilters {
 		} catch {
 			print("ERROR IN FILTER")
 		}
+	}
+	
+	public static func blurFilter(_ device: AVCaptureDevice, view: UIView, darken: Bool = false, enabled: Bool = true) {
+		if enabled {
+			let blur = UIBlurEffect(style: darken ? .dark : .regular)
+			let visualEffectView = UIVisualEffectView(effect: blur)
+			visualEffectView.alpha = 0.37
+			visualEffectView.frame = view.bounds
+			view.addSubview(visualEffectView)
+		} else {
+			for v in view.subviews {
+				if (v as? UIVisualEffectView)?.effect is UIBlurEffect {
+					v.removeFromSuperview()
+				}
+			}
+		}
+	}
+	
+	public static func imageOverlayFilter(_ view: UIView, image: UIImage, tag: Int, enabled: Bool = true) {
+		if enabled {
+			let imageView = UIImageView(image: image)
+			imageView.frame = view.bounds
+			imageView.contentMode = .scaleAspectFill
+			imageView.tag = tag
+			view.addSubview(imageView)
+		} else {
+			for v in view.subviews {
+				if v.tag == tag {
+					v.removeFromSuperview()
+				}
+			}
+		}
+		
 	}
 }

@@ -24,6 +24,9 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 		var lightSensitive = false
 		var noDetail = false
 		var fullyColorblind = false
+		var cataract = false
+		var glaucoma = false
+		var retinalDetachment = false
 	}
 
 	private var state = FilterState()
@@ -188,33 +191,33 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 		})
 		session.beginConfiguration()
 		switch sender?.name {
-		case "Far-Sighted":
-			if state.nearSighted {
-				CameraFilters.distanceFilter(videoDevice, far: false, enabled: false)
-				state.nearSighted = false
-				CameraFilters.distanceFilter(videoDevice, far: true, enabled: true)
-				state.farSighted = true
-			} else if state.farSighted {
-				CameraFilters.distanceFilter(videoDevice, far: true, enabled: false)
-				state.farSighted = false
-			} else {
-				CameraFilters.distanceFilter(videoDevice, far: true, enabled: true)
-				state.farSighted = true
-			}
 		case "Near-Sighted":
 			if state.farSighted {
-				CameraFilters.distanceFilter(videoDevice, far: true, enabled: false)
+				CameraFilters.distanceFilter(videoDevice, near: false, enabled: false)
 				state.farSighted = false
-				CameraFilters.distanceFilter(videoDevice, far: false, enabled: true)
+				CameraFilters.distanceFilter(videoDevice, near: true, enabled: true)
 				state.nearSighted = true
 			} else if state.nearSighted {
-				CameraFilters.distanceFilter(videoDevice, far: false, enabled: false)
+				CameraFilters.distanceFilter(videoDevice, near: true, enabled: false)
 				state.nearSighted = false
 			} else {
-				CameraFilters.distanceFilter(videoDevice, far: false, enabled: true)
+				CameraFilters.distanceFilter(videoDevice, near: true, enabled: true)
 				state.nearSighted = true
 			}
-			CameraFilters.distanceFilter(videoDevice, far: false, enabled: true)
+		case "Far-Sighted":
+			if state.nearSighted {
+				CameraFilters.distanceFilter(videoDevice, near: true, enabled: false)
+				state.nearSighted = false
+				CameraFilters.distanceFilter(videoDevice, near: false, enabled: true)
+				state.farSighted = true
+			} else if state.farSighted {
+				CameraFilters.distanceFilter(videoDevice, near: false, enabled: false)
+				state.farSighted = false
+			} else {
+				CameraFilters.distanceFilter(videoDevice, near: false, enabled: true)
+				state.farSighted = true
+			}
+			CameraFilters.distanceFilter(videoDevice, near: false, enabled: true)
 		case "Light Sensitive":
 			if state.noDetail {
 				CameraFilters.lightFilter(videoDevice, over: false, enabled: false)
@@ -243,6 +246,30 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			}
 		case "Fully Colorblind":
 			_ = CameraFilters.colorFilter(videoDevice, full: true, enabled: true)
+		case "Cataract":
+			if state.cataract {
+				CameraFilters.blurFilter(videoDevice, view: cameraView, darken: true, enabled: false)
+				state.cataract = false
+			} else {
+				CameraFilters.blurFilter(videoDevice, view: cameraView, darken: true, enabled: true)
+				state.cataract = true
+			}
+		case "Glaucoma":
+			if state.glaucoma {
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "GlaucomaVisionLoss")!, tag: 21, enabled: false)
+				state.glaucoma = false
+			} else {
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "GlaucomaVisionLoss")!, tag: 21, enabled: true)
+				state.glaucoma = true
+			}
+		case "Retinal Detachment":
+			if state.retinalDetachment {
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "RetinalDetachment")!, tag: 22, enabled: false)
+				state.retinalDetachment = false
+			} else {
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "RetinalDetachment")!, tag: 22, enabled: true)
+				state.retinalDetachment = true
+			}
 		default:
 			session.commitConfiguration()
 			return
@@ -254,7 +281,7 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 	// MARK: Collection View
 	public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return 6 // TODO
+		return 8 // TODO
 	}
 	
 	public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -265,12 +292,12 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 		cell.gestureRecognizers?.append(cell.tapRecognizer)
 		switch indexPath.row {
 		case 0:
-			cell.name = "Far-Sighted"
-			cell.tapRecognizer.name = "Far-Sighted"
-			cell.imageView.image = UIImage(named: "Distance") // TODO: FIX FOR PLAYGROUND
-		case 1:
 			cell.name = "Near-Sighted"
 			cell.tapRecognizer.name = "Near-Sighted"
+			cell.imageView.image = UIImage(named: "Distance") // TODO: FIX FOR PLAYGROUND
+		case 1:
+			cell.name = "Far-Sighted"
+			cell.tapRecognizer.name = "Far-Sighted"
 			cell.imageView.image = UIImage(named: "Distance") // TODO: FIX FOR PLAYGROUND
 		case 2:
 			cell.name = "Light Sensitive"
@@ -284,6 +311,18 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 			cell.name = "Fully Colorblind"
 			cell.tapRecognizer.name = "Fully Colorblind"
 			cell.imageView.image = UIImage(named: "Colorblind") // TODO: FIX FOR PLAYGROUND
+		case 5:
+			cell.name = "Cataract"
+			cell.tapRecognizer.name = "Cataract"
+			cell.imageView.image = UIImage(named: "Light") // TODO: FIX FOR PLAYGROUND
+		case 6:
+			cell.name = "Glaucoma"
+			cell.tapRecognizer.name = "Glaucoma"
+			cell.imageView.image = UIImage(named: "Light") // TODO: FIX FOR PLAYGROUND
+		case 7:
+			cell.name = "Retinal Detachment"
+			cell.tapRecognizer.name = "Retinal Detachment"
+			cell.imageView.image = UIImage(named: "Light") // TODO: FIX FOR PLAYGROUND
 		default:
 			cell.name = "Default"
 			cell.tapRecognizer.name = "Default"

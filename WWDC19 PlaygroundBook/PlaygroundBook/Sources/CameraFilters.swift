@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import CoreImage
 
 public class CameraFilters {
 	public static func distanceFilter(_ device: AVCaptureDevice, near: Bool = true, enabled: Bool = true) {
@@ -34,10 +35,9 @@ public class CameraFilters {
 		
 	}
 	
-	public static func colorFilter(_ device: AVCaptureDevice, full: Bool = true, enabled: Bool = true) -> AVCaptureDevice {
-		// Using Core Image filters
+	public static func colorFilter(_ device: AVCaptureDevice, full: Bool = true, enabled: Bool = true) {
+		// Using Core Image filters?
 		
-		return device
 	}
 	
 	public static func lightFilter(_ device: AVCaptureDevice, over: Bool = true, enabled: Bool = true) {
@@ -70,7 +70,7 @@ public class CameraFilters {
 			let blur = UIBlurEffect(style: darken ? .dark : .regular)
 			let visualEffectView = UIVisualEffectView(effect: blur)
 			visualEffectView.alpha = 0.37
-			visualEffectView.frame = view.bounds
+			visualEffectView.frame = view.frame
 			view.addSubview(visualEffectView)
 		} else {
 			for v in view.subviews {
@@ -84,7 +84,7 @@ public class CameraFilters {
 	public static func imageOverlayFilter(_ view: UIView, image: UIImage, tag: Int, enabled: Bool = true) {
 		if enabled {
 			let imageView = UIImageView(image: image)
-			imageView.frame = view.bounds
+			imageView.frame = view.frame
 			imageView.contentMode = .scaleAspectFill
 			imageView.tag = tag
 			view.addSubview(imageView)

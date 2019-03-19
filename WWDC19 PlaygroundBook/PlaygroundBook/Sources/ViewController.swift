@@ -11,7 +11,7 @@ import AVFoundation
 import PlaygroundSupport
 
 @objc(Book_Sources_ViewController)
-public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler, PlaygroundLiveViewSafeAreaContainer {
+public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler, PlaygroundLiveViewSafeAreaContainer, AVCaptureVideoDataOutputSampleBufferDelegate {
 
 	public func receive(_ message: PlaygroundValue) { // For Playgrounds
 		return
@@ -38,8 +38,10 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 	var videoDevice: AVCaptureDevice!
 	var videoDeviceInput: AVCaptureDeviceInput!
 	var photoOutput: AVCapturePhotoOutput!
+	var dataOutput: AVCaptureVideoDataOutput!
 	
 	@IBOutlet var cameraView: CameraView!
+	public var imageOverlay: UIImageView?
 	
 	@IBOutlet var filterPickerCollectionView: UICollectionView!
 	@IBOutlet var selectionLabel: UILabel!
@@ -84,6 +86,14 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 		}
 	}
 	
+	override public func viewWillLayoutSubviews() {
+		for v in cameraView.subviews {
+			v.removeFromSuperview()
+			v.frame = CGRect(origin: v.frame.origin, size: CGSize(width: v.frame.size.height, height: v.frame.size.width))
+			cameraView.addSubview(v)
+		}
+	}
+	
 	override public func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -91,6 +101,12 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 		filterPickerCollectionView.dataSource = self
 		
 		selectionLabel.layer.opacity = 0
+		
+		imageOverlay = UIImageView()
+		imageOverlay?.contentMode = .scaleAspectFill
+		imageOverlay?.frame = view.frame
+		imageOverlay?.alpha = 0
+		cameraView.addSubview(imageOverlay!)
 		
 		capture.setImage(UIImage(named: "Capture"), for: .normal) // TODO: FIX FOR PLAYGROUND
 	}
@@ -163,6 +179,9 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 				guard session.canAddOutput(photoOutput) else { return }
 				session.sessionPreset = .photo
 				session.addOutput(photoOutput)
+				dataOutput = AVCaptureVideoDataOutput()
+				dataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "dataOutput"))
+				session.addOutput(dataOutput)
 				session.commitConfiguration()
 				
 				self.session.startRunning()
@@ -177,6 +196,35 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			}
 		}
 		
+	}
+	
+	public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+		// filters
+		if state.fullyColorblind {
+			let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
+			let ciImage = CIImage(cvImageBuffer: imageBuffer!)
+			
+			let filter = CIFilter(name: "CIColorMonochrome")
+			filter?.setValue(ciImage, forKey: "inputImage")
+			let filteredImage = filter?.outputImage
+			var uiImage: UIImage
+			switch UIDevice.current.orientation {
+			case .portrait:
+				uiImage = UIImage(ciImage: filteredImage!, scale: 1, orientation: .left)
+			case .landscapeLeft:
+				uiImage = UIImage(ciImage: filteredImage!, scale: 1, orientation: .up)
+			case .landscapeRight:
+				uiImage = UIImage(ciImage: filteredImage!, scale: 1, orientation: .down)
+			case .portraitUpsideDown:
+				uiImage = UIImage(ciImage: filteredImage!, scale: 1, orientation: .right)
+			default:
+				uiImage = UIImage(ciImage: filteredImage!)
+			}
+			
+			DispatchQueue.main.async {
+				self.imageOverlay!.image = uiImage
+			}
+		}
 	}
 	
 	@objc public func tapRecognizer(_ sender: UITapGestureRecognizer?) {
@@ -245,7 +293,15 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 				state.noDetail = true
 			}
 		case "Fully Colorblind":
-			_ = CameraFilters.colorFilter(videoDevice, full: true, enabled: true)
+			if state.fullyColorblind {
+				//CameraFilters.colorFilter(cameraView.cameraLayer, full: true, enabled: false)
+				imageOverlay!.alpha = 0
+				state.fullyColorblind = false
+			} else {
+				//CameraFilters.colorFilter(cameraView.cameraLayer, full: true, enabled: true)
+				imageOverlay!.alpha = 1
+				state.fullyColorblind = true
+			}
 		case "Cataract":
 			if state.cataract {
 				CameraFilters.blurFilter(videoDevice, view: cameraView, darken: true, enabled: false)

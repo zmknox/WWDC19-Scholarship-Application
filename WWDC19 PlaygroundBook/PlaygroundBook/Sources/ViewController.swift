@@ -42,6 +42,7 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 	
 	@IBOutlet var cameraView: CameraView!
 	public var imageOverlay: UIImageView?
+	let ciContext = CIContext()
 	
 	@IBOutlet var filterPickerCollectionView: UICollectionView!
 	@IBOutlet var selectionLabel: UILabel!
@@ -75,6 +76,7 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 	override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
 		
+		UIDevice.current.beginGeneratingDeviceOrientationNotifications()
 		if let cameraLayerConnection = cameraView.cameraLayer.connection {
 			let deviceOrientation = UIDevice.current.orientation
 			guard let newVideoOrientation = AVCaptureVideoOrientation(deviceOrientation: deviceOrientation),
@@ -84,6 +86,7 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			
 			cameraLayerConnection.videoOrientation = newVideoOrientation
 		}
+		UIDevice.current.endGeneratingDeviceOrientationNotifications()
 	}
 	
 	override public func viewWillLayoutSubviews() {
@@ -97,6 +100,8 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 	override public func viewDidLoad() {
 		super.viewDidLoad()
 		
+		liveViewSafeAreaGuide.bottomAnchor.constraint(equalTo: filterPickerCollectionView.bottomAnchor).isActive = true
+		//filterPickerCollectionView.bottomAnchor.constraint(equalTo: liveViewSafeAreaGuide.bottomAnchor).isActive = true
 		filterPickerCollectionView.delegate = self
 		filterPickerCollectionView.dataSource = self
 		
@@ -201,28 +206,35 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 	public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
 		// filters
 		if state.fullyColorblind {
-			let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
-			let ciImage = CIImage(cvImageBuffer: imageBuffer!)
-			
-			let filter = CIFilter(name: "CIColorMonochrome")
-			filter?.setValue(ciImage, forKey: "inputImage")
-			let filteredImage = filter?.outputImage
-			var uiImage: UIImage
-			switch UIDevice.current.orientation {
-			case .portrait:
-				uiImage = UIImage(ciImage: filteredImage!, scale: 1, orientation: .left)
-			case .landscapeLeft:
-				uiImage = UIImage(ciImage: filteredImage!, scale: 1, orientation: .up)
-			case .landscapeRight:
-				uiImage = UIImage(ciImage: filteredImage!, scale: 1, orientation: .down)
-			case .portraitUpsideDown:
-				uiImage = UIImage(ciImage: filteredImage!, scale: 1, orientation: .right)
-			default:
-				uiImage = UIImage(ciImage: filteredImage!)
-			}
-			
-			DispatchQueue.main.async {
-				self.imageOverlay!.image = uiImage
+			sessionQueue.async {
+				let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
+				let ciImage = CIImage(cvImageBuffer: imageBuffer!)
+				
+				let filter = CIFilter(name: "CIColorMonochrome")
+				filter?.setValue(ciImage, forKey: "inputImage")
+				let filteredImage = filter?.outputImage
+				var transformedImage = filteredImage
+				var uiImage: UIImage
+				
+				UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+				switch UIDevice.current.orientation {
+				case .portrait:
+					transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat((3 * Double.pi)/2)))
+				case .landscapeRight:
+					transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat(Double.pi)))
+				case .portraitUpsideDown:
+					transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat(Double.pi/2)))
+				default:
+					transformedImage = filteredImage
+				}
+				UIDevice.current.endGeneratingDeviceOrientationNotifications()
+
+				let cgImage = self.ciContext.createCGImage(transformedImage!, from: transformedImage!.extent)
+				uiImage = UIImage(cgImage: cgImage!)
+				
+				DispatchQueue.main.async {
+					self.imageOverlay!.image = uiImage
+				}
 			}
 		}
 	}

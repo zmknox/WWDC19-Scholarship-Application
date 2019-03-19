@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="667"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9T8-fB-CHR">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9T8-fB-CHR">
                                 <rect key="frame" x="146.5" y="533" width="82" height="55"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="9T8-fB-CHR" secondAttribute="height" multiplier="82:55" id="MA1-eR-iJI"/>
@@ -35,7 +35,7 @@
                                     <action selector="captureButton:" destination="xFo-s0-DeY" eventType="touchUpInside" id="plY-Ax-W7p"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GIa-oA-ia6">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GIa-oA-ia6">
                                 <rect key="frame" x="0.0" y="507.5" width="375" height="19.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -85,7 +85,6 @@
                         <constraints>
                             <constraint firstItem="DUv-Qv-lqZ" firstAttribute="top" secondItem="9T8-fB-CHR" secondAttribute="bottom" constant="12" id="EYn-hK-Vqj"/>
                             <constraint firstItem="9T8-fB-CHR" firstAttribute="centerX" secondItem="0jC-vT-FvX" secondAttribute="centerX" id="GUg-2A-9PF"/>
-                            <constraint firstItem="0jC-vT-FvX" firstAttribute="bottom" secondItem="DUv-Qv-lqZ" secondAttribute="bottom" id="RTm-WM-5yw"/>
                             <constraint firstItem="DUv-Qv-lqZ" firstAttribute="width" secondItem="xBy-bK-tsN" secondAttribute="width" id="TGX-OM-5iT"/>
                             <constraint firstItem="l8X-nD-Is8" firstAttribute="height" secondItem="xBy-bK-tsN" secondAttribute="height" id="Y1E-0N-hqq"/>
                             <constraint firstItem="l8X-nD-Is8" firstAttribute="width" secondItem="xBy-bK-tsN" secondAttribute="width" id="b8i-hl-D2A"/>

@@ -13,8 +13,10 @@ import Photos
 @objc(Book_Sources_CapturedViewController)
 public class CapturedViewController: UIViewController {
 
+	public var state: FilterState!
 	public var photo: AVCapturePhoto!
 	@IBOutlet var imageView: UIImageView!
+	let ciContext = CIContext()
 	
 	@IBOutlet var savedLabel: UILabel!
 	
@@ -64,6 +66,70 @@ public class CapturedViewController: UIViewController {
 		
 		imageView.contentMode = .scaleAspectFill
 		imageView.image = UIImage(data: photo.fileDataRepresentation()!)
+		
+		// Apply Filters to capture
+		if state.fullyColorblind {
+			let ciImage = CIImage(image: imageView.image!)
+			
+			let filter = CIFilter(name: "CIColorMonochrome")
+			filter?.setValue(ciImage, forKey: "inputImage")
+			let filteredImage = filter?.outputImage
+			var transformedImage = filteredImage
+			switch self.interfaceOrientation { // Using because UIDevice.current.orientation returns unknown in playgrounds
+			case .portrait:
+				transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat((3 * Double.pi)/2)))
+			case .landscapeLeft:
+				transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat(Double.pi)))
+			case .portraitUpsideDown:
+				transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat(Double.pi/2)))
+			default:
+				transformedImage = filteredImage
+			}
+			let cgImage = self.ciContext.createCGImage(transformedImage!, from: transformedImage!.extent)
+			imageView.image = UIImage(cgImage: cgImage!)
+		}
+		if state.cataract {
+			let blur = UIBlurEffect(style: .dark)
+			let visualEffectView = UIVisualEffectView(effect: blur)
+			visualEffectView.alpha = 0.37
+			visualEffectView.frame = self.view.frame
+			imageView.addSubview(visualEffectView)
+		}
+		if state.glaucoma {
+			let image = UIImage(named: "GlaucomaVisionLoss")
+			let subView = UIImageView(image: image)
+			subView.contentMode = .scaleAspectFill
+			subView.frame = self.view.frame
+			imageView.addSubview(subView)
+		}
+		if state.retinalDetachment {
+			let image = UIImage(named: "RetinalDetachment")
+			let subView = UIImageView(image: image)
+			subView.contentMode = .scaleAspectFill
+			subView.frame = self.view.frame
+			imageView.addSubview(subView)
+		}
+		if state.noCentral {
+			let image = UIImage(named: "NoCentral")
+			let subView = UIImageView(image: image)
+			subView.contentMode = .scaleAspectFill
+			subView.frame = self.view.frame
+			imageView.addSubview(subView)
+		}
+		if state.noPeripheral {
+			let image = UIImage(named: "NoPeripheral")
+			let subView = UIImageView(image: image)
+			subView.contentMode = .scaleAspectFill
+			subView.frame = self.view.frame
+			imageView.addSubview(subView)
+		}
+		if state.blind {
+			let image = UIImage(named: "Blind")
+			let subView = UIImageView(image: image)
+			subView.contentMode = .scaleAspectFill
+			subView.frame = self.view.frame
+			imageView.addSubview(subView)
+		}
         
     }
     

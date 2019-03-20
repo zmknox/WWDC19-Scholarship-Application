@@ -10,26 +10,26 @@ import UIKit
 import AVFoundation
 import PlaygroundSupport
 
+public struct FilterState {
+	var startedOnce = false
+	var farSighted = false
+	var nearSighted = false
+	var lightSensitive = false
+	var noDetail = false
+	var fullyColorblind = false
+	var cataract = false
+	var glaucoma = false
+	var retinalDetachment = false
+	var noPeripheral = false
+	var noCentral = false
+	var blind = false
+}
+
 @objc(Book_Sources_ViewController)
 public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler, PlaygroundLiveViewSafeAreaContainer, AVCaptureVideoDataOutputSampleBufferDelegate {
 
 	public func receive(_ message: PlaygroundValue) { // For Playgrounds
 		return
-	}
-	
-	public struct FilterState {
-		var startedOnce = false
-		var farSighted = false
-		var nearSighted = false
-		var lightSensitive = false
-		var noDetail = false
-		var fullyColorblind = false
-		var cataract = false
-		var glaucoma = false
-		var retinalDetachment = false
-		var noPeripheral = false
-		var noCentral = false
-		var blind = false
 	}
 
 	private var state = FilterState()
@@ -502,6 +502,7 @@ extension ViewController: AVCapturePhotoCaptureDelegate {
 		DispatchQueue.main.async {
 			let vc = self.storyboard?.instantiateViewController(withIdentifier: "captured") as? CapturedViewController
 			vc?.photo = photo
+			vc?.state = self.state
 			self.present(vc!, animated: false, completion: nil)
 		}
 	}

@@ -76,9 +76,31 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 	override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
 		
-		UIDevice.current.beginGeneratingDeviceOrientationNotifications()
-		if let cameraLayerConnection = cameraView.cameraLayer.connection {
-			let deviceOrientation = UIDevice.current.orientation
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
+			self.orientVideo()
+		}
+	}
+	
+	func orientVideo() {
+		if let cameraLayerConnection = self.cameraView.cameraLayer.connection {
+			let interfaceOrientation = self.interfaceOrientation // Using this as it is seemingly the ONLY way to get orientation in a playground — I really wish UIDevice.current.orientation worked in a playground
+			var deviceOrientation: UIDeviceOrientation
+			switch interfaceOrientation {
+			case .portrait:
+				deviceOrientation = .portrait
+				print("p")
+			case .portraitUpsideDown:
+				deviceOrientation = .portraitUpsideDown
+				print("pu")
+			case .landscapeLeft:
+				deviceOrientation = .landscapeRight
+				print("ll")
+			case .landscapeRight:
+				deviceOrientation = .landscapeLeft
+				print("lr")
+			default:
+				deviceOrientation = .unknown
+			}
 			guard let newVideoOrientation = AVCaptureVideoOrientation(deviceOrientation: deviceOrientation),
 				deviceOrientation.isPortrait || deviceOrientation.isLandscape else {
 					return
@@ -86,14 +108,35 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			
 			cameraLayerConnection.videoOrientation = newVideoOrientation
 		}
-		UIDevice.current.endGeneratingDeviceOrientationNotifications()
 	}
 	
 	override public func viewWillLayoutSubviews() {
+		super.viewWillLayoutSubviews()
+	}
+	
+	override public func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		
 		for v in cameraView.subviews {
-			v.removeFromSuperview()
-			v.frame = CGRect(origin: v.frame.origin, size: CGSize(width: v.frame.size.height, height: v.frame.size.width))
-			cameraView.addSubview(v)
+			if v === imageOverlay {
+				imageOverlay!.removeFromSuperview()
+				imageOverlay!.frame = cameraView.frame
+				cameraView.addSubview(imageOverlay!)
+			}
+			else if v is UIImageView {
+				let image = (v as! UIImageView).image
+				let tag = v.tag
+				v.removeFromSuperview()
+				let newView = UIImageView(image: image)
+				newView.frame = cameraView.frame
+				newView.contentMode = .scaleAspectFill
+				newView.tag = tag
+				cameraView.addSubview(newView)
+			} else {
+				v.removeFromSuperview()
+				v.frame = CGRect(origin: v.frame.origin, size: CGSize(width: v.frame.size.height, height: v.frame.size.width))
+				cameraView.addSubview(v)
+			}
 		}
 	}
 	
@@ -196,6 +239,7 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 				
 				DispatchQueue.main.async {
 					self.cameraView.cameraLayer.session = self.session
+					self.orientVideo()
 				}
 				
 			}
@@ -217,10 +261,10 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 				var uiImage: UIImage
 				
 				UIDevice.current.beginGeneratingDeviceOrientationNotifications()
-				switch UIDevice.current.orientation {
+				switch self.interfaceOrientation { // Using because UIDevice.current.orientation returns unknown in playgrounds
 				case .portrait:
 					transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat((3 * Double.pi)/2)))
-				case .landscapeRight:
+				case .landscapeLeft:
 					transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat(Double.pi)))
 				case .portraitUpsideDown:
 					transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat(Double.pi/2)))

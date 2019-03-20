@@ -27,6 +27,9 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 		var cataract = false
 		var glaucoma = false
 		var retinalDetachment = false
+		var noPeripheral = false
+		var noCentral = false
+		var blind = false
 	}
 
 	private var state = FilterState()
@@ -366,21 +369,45 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 				CameraFilters.blurFilter(videoDevice, view: cameraView, darken: true, enabled: true)
 				state.cataract = true
 			}
+		case "No Peripheral Vision":
+			if state.noPeripheral {
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "NoPeripheral")!, tag: 21, enabled: false)
+				state.noPeripheral = false
+			} else {
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "NoPeripheral")!, tag: 21, enabled: true)
+				state.noPeripheral = true
+			}
+		case "No Central Vision":
+			if state.noCentral {
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "NoCentral")!, tag: 22, enabled: false)
+				state.noCentral = false
+			} else {
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "NoCentral")!, tag: 22, enabled: true)
+				state.noCentral = true
+			}
 		case "Glaucoma":
 			if state.glaucoma {
-				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "GlaucomaVisionLoss")!, tag: 21, enabled: false)
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "GlaucomaVisionLoss")!, tag: 23, enabled: false)
 				state.glaucoma = false
 			} else {
-				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "GlaucomaVisionLoss")!, tag: 21, enabled: true)
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "GlaucomaVisionLoss")!, tag: 23, enabled: true)
 				state.glaucoma = true
 			}
 		case "Retinal Detachment":
 			if state.retinalDetachment {
-				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "RetinalDetachment")!, tag: 22, enabled: false)
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "RetinalDetachment")!, tag: 24, enabled: false)
 				state.retinalDetachment = false
 			} else {
-				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "RetinalDetachment")!, tag: 22, enabled: true)
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "RetinalDetachment")!, tag: 24, enabled: true)
 				state.retinalDetachment = true
+			}
+		case "Blind":
+			if state.blind {
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "Blind")!, tag: 25, enabled: false)
+				state.blind = false
+			} else {
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "Blind")!, tag: 25, enabled: true)
+				state.blind = true
 			}
 		default:
 			session.commitConfiguration()
@@ -393,7 +420,7 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 	// MARK: Collection View
 	public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return 8 // TODO
+		return 11 // TODO
 	}
 	
 	public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -426,15 +453,27 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 		case 5:
 			cell.name = "Cataract"
 			cell.tapRecognizer.name = "Cataract"
-			cell.imageView.image = UIImage(named: "Light") // TODO: FIX FOR PLAYGROUND
+			cell.imageView.image = UIImage(named: "Cataracts") // TODO: FIX FOR PLAYGROUND
 		case 6:
+			cell.name = "No Peripheral Vision"
+			cell.tapRecognizer.name = "No Peripheral Vision"
+			cell.imageView.image = UIImage(named: "NoPeripheralCV") // TODO: FIX FOR PLAYGROUND
+		case 7:
+			cell.name = "No Central Vision"
+			cell.tapRecognizer.name = "No Central Vision"
+			cell.imageView.image = UIImage(named: "NoCentralCV") // TODO: FIX FOR PLAYGROUND
+		case 8:
 			cell.name = "Glaucoma"
 			cell.tapRecognizer.name = "Glaucoma"
-			cell.imageView.image = UIImage(named: "Light") // TODO: FIX FOR PLAYGROUND
-		case 7:
+			cell.imageView.image = UIImage(named: "GlaucomaCV") // TODO: FIX FOR PLAYGROUND
+		case 9:
 			cell.name = "Retinal Detachment"
 			cell.tapRecognizer.name = "Retinal Detachment"
-			cell.imageView.image = UIImage(named: "Light") // TODO: FIX FOR PLAYGROUND
+			cell.imageView.image = UIImage(named: "RetinalDetachmentCV") // TODO: FIX FOR PLAYGROUND
+		case 10:
+			cell.name = "Blind"
+			cell.tapRecognizer.name = "Blind"
+			cell.imageView.image = UIImage(named: "BlindCV") // TODO: FIX FOR PLAYGROUND
 		default:
 			cell.name = "Default"
 			cell.tapRecognizer.name = "Default"

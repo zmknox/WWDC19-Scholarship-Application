@@ -1,18 +1,34 @@
-//#-hidden-code
-//
-//  Abstract:
-//  The Swift file containing the source code edited by the user of this playground book.
-//
-//#-end-hidden-code
 /*:
-# Vision Disease Camera Filters
+# Vision Disability Filter Camera
+## Learn more about the symptoms of eye diseases by experiencing them with camera filters
+
 #### A WWDC Scholarship Application by Zach Knox
 
-- Important:
-Camera not in the right orientation? Try rotating your device!
+- Note:
+Make sure the Live View is open to experience this playground.
+
+- - -
 
 This playground allows you to play around with various filters which simulate symptoms of various
-vision-related diseases.
+vision-related diseases. At the bottom of the screen, you will find many filters—much like you would
+see in Instagram Stories' camera or Snapchat. Try enabling some and see what happens!
+
+###### Each filter represents a symptom caused by various eye diseases. For example: the colorblind filter turns your camera display into a grayscale image.
+
+- Experiment:
+Using these filters, you can get some idea of what it's like to have **Achromatopsia**, the eye disease
+I have in which you see with only your rods. Here are the filters to try combining:
+
+  - Near-Sighted
+  - Light Sensitive
+  - Fully Colorblind
+
+If you want to save your filtered picture, simply press the capture button above the filters. From there,
+you can preview your image, and save it to your camera roll!
+
+Vision is often seen as one of the most critical senses, but it is important to understand that many people
+see differently. These filters can help give you more perspective on what others may see. I hope you enjoy
+experimenting with these filters, and can use them to better understand vision disabilities.
 */
 import PlaygroundSupport
 

@@ -17,9 +17,9 @@
 		5EA2E3DB2056F8D100416A35 /* PlaygroundSupport.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5EA2E3D72056F88700416A35 /* PlaygroundSupport.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5EBEC2F0205B399300975D3F /* LiveViewHost.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5EBEC2EF205B396500975D3F /* LiveViewHost.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5EF2F97C2054B6E400191409 /* ManifestPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5EF2F97E2054B6E400191409 /* ManifestPlist.strings */; };
-		5EF2F9AE2054BBF300191409 /* LiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF2F9AD2054BBF300191409 /* LiveViewController.swift */; };
 		5EF2F9B72054E6FB00191409 /* Chapters in Copy Book Contents */ = {isa = PBXBuildFile; fileRef = 5EF2F9B62054E6F900191409 /* Chapters */; };
 		5EF2F9B82054E6FE00191409 /* Sources in Copy Book Contents */ = {isa = PBXBuildFile; fileRef = 5EF2F9A52054BBB200191409 /* Sources */; };
+		9284B28622443A6D0071EF72 /* book.png in Resources */ = {isa = PBXBuildFile; fileRef = 9284B28522443A6D0071EF72 /* book.png */; };
 		92B07F94223DB560008D18D6 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B07F8E223DB560008D18D6 /* CameraView.swift */; };
 		92B07F95223DB560008D18D6 /* FilterCollectionViewCelll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B07F8F223DB560008D18D6 /* FilterCollectionViewCelll.swift */; };
 		92B07F96223DB560008D18D6 /* LiveViewSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B07F90223DB560008D18D6 /* LiveViewSupport.swift */; };
@@ -114,9 +114,9 @@
 		5EF2F97D2054B6E400191409 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ManifestPlist.strings; sourceTree = "<group>"; };
 		5EF2F9A52054BBB200191409 /* Sources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sources; sourceTree = "<group>"; };
 		5EF2F9AB2054BBF300191409 /* libBook_Sources.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBook_Sources.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		5EF2F9AD2054BBF300191409 /* LiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveViewController.swift; sourceTree = "<group>"; };
 		5EF2F9B62054E6F900191409 /* Chapters */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Chapters; sourceTree = "<group>"; };
 		9284B282223DC4FD0071EF72 /* Template README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Template README.md"; sourceTree = SOURCE_ROOT; };
+		9284B28522443A6D0071EF72 /* book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = book.png; sourceTree = "<group>"; };
 		92B07F8E223DB560008D18D6 /* CameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		92B07F8F223DB560008D18D6 /* FilterCollectionViewCelll.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCollectionViewCelll.swift; sourceTree = "<group>"; };
 		92B07F90223DB560008D18D6 /* LiveViewSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveViewSupport.swift; sourceTree = "<group>"; };
@@ -245,6 +245,7 @@
 		5EF2F9792054B64800191409 /* PrivateResources */ = {
 			isa = PBXGroup;
 			children = (
+				9284B28522443A6D0071EF72 /* book.png */,
 				92B07F9A223DB57C008D18D6 /* Assets.xcassets */,
 				5EF2F97E2054B6E400191409 /* ManifestPlist.strings */,
 				5E086DCC2051DDAE004D8D25 /* LiveView.storyboard */,
@@ -255,7 +256,6 @@
 		5EF2F9A22054BB3E00191409 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				5EF2F9AD2054BBF300191409 /* LiveViewController.swift */,
 				92B07F93223DB560008D18D6 /* CameraFilters.swift */,
 				92B07F8E223DB560008D18D6 /* CameraView.swift */,
 				92B07F91223DB560008D18D6 /* CapturedViewController.swift */,
@@ -382,6 +382,7 @@
 			files = (
 				5EF2F97C2054B6E400191409 /* ManifestPlist.strings in Resources */,
 				92B07F9B223DB57C008D18D6 /* Assets.xcassets in Resources */,
+				9284B28622443A6D0071EF72 /* book.png in Resources */,
 				5E086DCA2051DDAE004D8D25 /* LiveView.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -432,7 +433,6 @@
 				92B07F96223DB560008D18D6 /* LiveViewSupport.swift in Sources */,
 				92B07F94223DB560008D18D6 /* CameraView.swift in Sources */,
 				5E3196F32061DEA40077BBD7 /* LiveViewSupport.swift in Sources */,
-				5EF2F9AE2054BBF300191409 /* LiveViewController.swift in Sources */,
 				92B07F98223DB560008D18D6 /* ViewController.swift in Sources */,
 				92B07F97223DB560008D18D6 /* CapturedViewController.swift in Sources */,
 				92B07F95223DB560008D18D6 /* FilterCollectionViewCelll.swift in Sources */,

@@ -2,7 +2,6 @@
 //  CameraView.swift
 //  WWDC19App
 //
-//  Created by Zach Knox on 3/14/19.
 //  Copyright © 2019 Zachary Knox. All rights reserved.
 //
 

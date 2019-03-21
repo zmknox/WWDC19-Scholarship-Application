@@ -122,31 +122,32 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ATQ-mr-XLS">
-                                <rect key="frame" x="95.5" y="591" width="184" height="64"/>
+                                <rect key="frame" x="84" y="523" width="207" height="64"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="du0-BW-hmO">
-                                        <rect key="frame" x="67" y="0.0" width="117" height="64"/>
-                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="du0-BW-hmO">
+                                        <rect key="frame" x="79" y="0.0" width="128" height="64"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstAttribute="width" secondItem="du0-BW-hmO" secondAttribute="height" multiplier="2:1" id="3uu-Dd-l0L"/>
                                             <constraint firstAttribute="height" constant="64" id="DID-vE-Tel"/>
-                                            <constraint firstAttribute="width" secondItem="du0-BW-hmO" secondAttribute="height" multiplier="117:64" id="MV8-zD-Hcu"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
-                                        <state key="normal" title="Save">
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Save" image="saveArrow">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <connections>
                                             <action selector="saveButton:" destination="mLg-cg-tN9" eventType="touchUpInside" id="XKQ-cS-4fs"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8gl-zz-9Fg">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8gl-zz-9Fg">
                                         <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="8gl-zz-9Fg" secondAttribute="height" multiplier="1:1" id="ir1-VM-dBY"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
-                                        <state key="normal" title="Back">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Back" image="backArrow">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <connections>
@@ -162,26 +163,26 @@
                                     <constraint firstItem="8gl-zz-9Fg" firstAttribute="leading" secondItem="ATQ-mr-XLS" secondAttribute="leading" id="fJy-fk-VSg"/>
                                     <constraint firstAttribute="trailing" secondItem="du0-BW-hmO" secondAttribute="trailing" id="kUm-Yd-vdv"/>
                                     <constraint firstItem="8gl-zz-9Fg" firstAttribute="centerY" secondItem="ATQ-mr-XLS" secondAttribute="centerY" id="pvE-jw-kyC"/>
-                                    <constraint firstItem="du0-BW-hmO" firstAttribute="leading" secondItem="8gl-zz-9Fg" secondAttribute="trailing" constant="3" id="yKp-Wi-9b2"/>
+                                    <constraint firstItem="du0-BW-hmO" firstAttribute="leading" secondItem="8gl-zz-9Fg" secondAttribute="trailing" constant="15" id="yKp-Wi-9b2"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6yO-6q-AHZ">
-                                <rect key="frame" x="0.0" y="549" width="375" height="24"/>
+                                <rect key="frame" x="0.0" y="481" width="375" height="24"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="AA0-bY-Wia">
-                                <rect key="frame" x="169" y="504" width="37" height="37"/>
+                                <rect key="frame" x="169" y="436" width="37" height="37"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="AA0-bY-Wia" firstAttribute="centerX" secondItem="Scb-KF-E7e" secondAttribute="centerX" id="AUA-c3-46G"/>
                             <constraint firstItem="3lh-hw-8Kw" firstAttribute="centerY" secondItem="Cq7-Wb-3Ad" secondAttribute="centerY" id="CGg-tE-Mk8"/>
+                            <constraint firstItem="Scb-KF-E7e" firstAttribute="bottom" secondItem="ATQ-mr-XLS" secondAttribute="bottom" constant="80" id="G6x-UX-ZrG"/>
                             <constraint firstItem="6yO-6q-AHZ" firstAttribute="centerX" secondItem="Scb-KF-E7e" secondAttribute="centerX" id="OCH-uo-P80"/>
                             <constraint firstItem="3lh-hw-8Kw" firstAttribute="width" secondItem="Cq7-Wb-3Ad" secondAttribute="width" id="bbw-8s-iEQ"/>
-                            <constraint firstItem="Scb-KF-E7e" firstAttribute="bottom" secondItem="ATQ-mr-XLS" secondAttribute="bottom" constant="12" id="bmy-dP-xeO"/>
                             <constraint firstItem="ATQ-mr-XLS" firstAttribute="centerX" secondItem="Scb-KF-E7e" secondAttribute="centerX" id="bwT-Tq-NK0"/>
                             <constraint firstItem="6yO-6q-AHZ" firstAttribute="top" secondItem="AA0-bY-Wia" secondAttribute="bottom" constant="8" id="eXx-Hw-H25"/>
                             <constraint firstItem="ATQ-mr-XLS" firstAttribute="top" secondItem="6yO-6q-AHZ" secondAttribute="bottom" constant="18" id="iwN-6Q-TEA"/>
@@ -193,6 +194,7 @@
                     </view>
                     <connections>
                         <outlet property="back" destination="8gl-zz-9Fg" id="Jor-RC-H4w"/>
+                        <outlet property="buttonView" destination="ATQ-mr-XLS" id="3tF-GS-WSN"/>
                         <outlet property="imageView" destination="3lh-hw-8Kw" id="vkW-gA-FLa"/>
                         <outlet property="isSaving" destination="AA0-bY-Wia" id="aD5-LD-XWx"/>
                         <outlet property="save" destination="du0-BW-hmO" id="arN-4Z-JSO"/>
@@ -204,4 +206,8 @@
             <point key="canvasLocation" x="885.60000000000002" y="132.68365817091455"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="backArrow" width="64" height="64"/>
+        <image name="saveArrow" width="56" height="64"/>
+    </resources>
 </document>

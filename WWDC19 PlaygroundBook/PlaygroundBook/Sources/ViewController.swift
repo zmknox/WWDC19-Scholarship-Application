@@ -91,16 +91,12 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			switch interfaceOrientation {
 			case .portrait:
 				deviceOrientation = .portrait
-				print("p")
 			case .portraitUpsideDown:
 				deviceOrientation = .portraitUpsideDown
-				print("pu")
 			case .landscapeLeft:
 				deviceOrientation = .landscapeRight
-				print("ll")
 			case .landscapeRight:
 				deviceOrientation = .landscapeLeft
-				print("lr")
 			default:
 				deviceOrientation = .unknown
 			}
@@ -353,11 +349,9 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			}
 		case "Fully Colorblind":
 			if state.fullyColorblind {
-				//CameraFilters.colorFilter(cameraView.cameraLayer, full: true, enabled: false)
 				imageOverlay!.alpha = 0
 				state.fullyColorblind = false
 			} else {
-				//CameraFilters.colorFilter(cameraView.cameraLayer, full: true, enabled: true)
 				imageOverlay!.alpha = 1
 				state.fullyColorblind = true
 			}

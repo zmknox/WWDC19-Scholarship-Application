@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import PlaygroundSupport
 import AVFoundation
 import Photos
 
 @objc(Book_Sources_CapturedViewController)
-public class CapturedViewController: UIViewController {
-
+public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAreaContainer {
+	
 	public var state: FilterState!
 	public var photo: AVCapturePhoto!
 	@IBOutlet var imageView: UIImageView!
@@ -21,6 +22,7 @@ public class CapturedViewController: UIViewController {
 	@IBOutlet var savedLabel: UILabel!
 	@IBOutlet var isSaving: UIActivityIndicatorView!
 	
+	@IBOutlet var buttonView: UIView!
 	@IBOutlet var save: UIButton!
 	@IBAction public func saveButton(_ sender: Any) {
 		self.isSaving.startAnimating()
@@ -70,14 +72,42 @@ public class CapturedViewController: UIViewController {
 		self.dismiss(animated: false, completion: nil)
 	}
 	
+	override public func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		
+		for v in imageView.subviews {
+			if v is UIImageView {
+				let image = (v as! UIImageView).image
+				let tag = v.tag
+				v.removeFromSuperview()
+				let newView = UIImageView(image: image)
+				newView.frame = imageView.frame
+				newView.contentMode = .scaleAspectFill
+				newView.tag = tag
+				imageView.addSubview(newView)
+			} else {
+				v.removeFromSuperview()
+				v.frame = CGRect(origin: v.frame.origin, size: CGSize(width: v.frame.size.height, height: v.frame.size.width))
+				imageView.addSubview(v)
+			}
+		}
+	}
+	
 	override public func viewDidLoad() {
         super.viewDidLoad()
 
+		liveViewSafeAreaGuide.bottomAnchor.constraint(equalTo: buttonView.bottomAnchor).isActive = true
+		
 		savedLabel.text = ""
 		savedLabel.alpha = 0
 		
 		imageView.contentMode = .scaleAspectFill
 		imageView.image = UIImage(data: photo.fileDataRepresentation()!)
+		
+		back.layer.cornerRadius = 32
+		save.layer.cornerRadius = 32
+		save.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 15)
+		save.imageEdgeInsets = UIEdgeInsets(top: 0, left: -7, bottom: 0, right: 5)
 		
 		// Apply Filters to capture
 		if state.fullyColorblind {

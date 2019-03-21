@@ -414,6 +414,7 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			return
 		}
 		session.commitConfiguration()
+		filterPickerCollectionView.reloadData()
 	}
 }
 
@@ -433,47 +434,90 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 		case 0:
 			cell.name = "Near-Sighted"
 			cell.tapRecognizer.name = "Near-Sighted"
-			cell.imageView.image = UIImage(named: "Distance") // TODO: FIX FOR PLAYGROUND
+			if state.nearSighted {
+				cell.imageView.image = UIImage(named: "Distance")
+			} else {
+				cell.imageView.image = UIImage(named: "DistanceDisabled")
+			}
 		case 1:
 			cell.name = "Far-Sighted"
 			cell.tapRecognizer.name = "Far-Sighted"
-			cell.imageView.image = UIImage(named: "Distance") // TODO: FIX FOR PLAYGROUND
+			if state.farSighted {
+				cell.imageView.image = UIImage(named: "Distance")
+			} else {
+				cell.imageView.image = UIImage(named: "DistanceDisabled")
+			}
 		case 2:
 			cell.name = "Light Sensitive"
 			cell.tapRecognizer.name = "Light Sensitive"
-			cell.imageView.image = UIImage(named: "Light") // TODO: FIX FOR PLAYGROUND
+			if state.lightSensitive {
+				cell.imageView.image = UIImage(named: "Light")
+			} else {
+				cell.imageView.image = UIImage(named: "LightDisabled")
+			}
 		case 3:
 			cell.name = "No Detail"
 			cell.tapRecognizer.name = "No Detail"
-			cell.imageView.image = UIImage(named: "Light") // TODO: FIX FOR PLAYGROUND
-		case 4:
+			if state.noDetail {
+				cell.imageView.image = UIImage(named: "Light")
+			} else {
+				cell.imageView.image = UIImage(named: "LightDisabled")
+			}		case 4:
 			cell.name = "Fully Colorblind"
 			cell.tapRecognizer.name = "Fully Colorblind"
-			cell.imageView.image = UIImage(named: "Colorblind") // TODO: FIX FOR PLAYGROUND
+			if state.fullyColorblind {
+				cell.imageView.image = UIImage(named: "Colorblind")
+			} else {
+				cell.imageView.image = UIImage(named: "ColorblindDisabled")
+			}
 		case 5:
 			cell.name = "Cataract"
 			cell.tapRecognizer.name = "Cataract"
-			cell.imageView.image = UIImage(named: "Cataracts") // TODO: FIX FOR PLAYGROUND
+			if state.cataract {
+				cell.imageView.image = UIImage(named: "Cataracts")
+			} else {
+				cell.imageView.image = UIImage(named: "CataractsDisabled")
+			}
 		case 6:
 			cell.name = "No Peripheral Vision"
 			cell.tapRecognizer.name = "No Peripheral Vision"
-			cell.imageView.image = UIImage(named: "NoPeripheralCV") // TODO: FIX FOR PLAYGROUND
+			if state.noPeripheral {
+				cell.imageView.image = UIImage(named: "NoPeripheralCV")
+			} else {
+				cell.imageView.image = UIImage(named: "NoPeripheralCVDisabled")
+			}
 		case 7:
 			cell.name = "No Central Vision"
 			cell.tapRecognizer.name = "No Central Vision"
-			cell.imageView.image = UIImage(named: "NoCentralCV") // TODO: FIX FOR PLAYGROUND
+			if state.noCentral {
+				cell.imageView.image = UIImage(named: "NoCentralCV")
+			} else {
+				cell.imageView.image = UIImage(named: "NoCentralCVDisabled")
+			}
 		case 8:
 			cell.name = "Glaucoma"
 			cell.tapRecognizer.name = "Glaucoma"
-			cell.imageView.image = UIImage(named: "GlaucomaCV") // TODO: FIX FOR PLAYGROUND
+			if state.glaucoma {
+				cell.imageView.image = UIImage(named: "GlaucomaCV")
+			} else {
+				cell.imageView.image = UIImage(named: "GlaucomaCVDisabled")
+			}
 		case 9:
 			cell.name = "Retinal Detachment"
 			cell.tapRecognizer.name = "Retinal Detachment"
-			cell.imageView.image = UIImage(named: "RetinalDetachmentCV") // TODO: FIX FOR PLAYGROUND
+			if state.retinalDetachment {
+				cell.imageView.image = UIImage(named: "RetinalDetachmentCV")
+			} else {
+				cell.imageView.image = UIImage(named: "RetinalDetachmentCVDisabled")
+			}
 		case 10:
 			cell.name = "Blind"
 			cell.tapRecognizer.name = "Blind"
-			cell.imageView.image = UIImage(named: "BlindCV") // TODO: FIX FOR PLAYGROUND
+			if state.blind {
+				cell.imageView.image = UIImage(named: "BlindCV")
+			} else {
+				cell.imageView.image = UIImage(named: "BlindCVDisabled")
+			}
 		default:
 			cell.name = "Default"
 			cell.tapRecognizer.name = "Default"

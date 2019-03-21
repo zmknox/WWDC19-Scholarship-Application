@@ -342,13 +342,13 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			if state.lightSensitive {
 				CameraFilters.lightFilter(videoDevice, over: true, enabled: false)
 				state.lightSensitive = false
-				CameraFilters.lightFilter(videoDevice, over: false, enabled: true)
+				CameraFilters.lightOnlyFilter(videoDevice, view: cameraView, enabled: true)
 				state.noDetail = true
 			} else if state.noDetail {
-				CameraFilters.lightFilter(videoDevice, over: false, enabled: false)
+				CameraFilters.lightOnlyFilter(videoDevice, view: cameraView, enabled: false)
 				state.noDetail = false
 			} else {
-				CameraFilters.lightFilter(videoDevice, over: false, enabled: true)
+				CameraFilters.lightOnlyFilter(videoDevice, view: cameraView, enabled: true)
 				state.noDetail = true
 			}
 		case "Fully Colorblind":

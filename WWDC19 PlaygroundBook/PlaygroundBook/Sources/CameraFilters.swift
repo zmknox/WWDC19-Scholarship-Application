@@ -27,16 +27,12 @@ public class CameraFilters {
 				}
 			} else { // disable
 				device.focusMode = .continuousAutoFocus
+				device.unlockForConfiguration()
 			}
 			
 		} catch {
 			print("ERROR IN FILTER")
 		}
-		
-	}
-	
-	public static func colorFilter(_ device: AVCaptureDevice, full: Bool = true, enabled: Bool = true) {
-		// Using Core Image filters?
 		
 	}
 	
@@ -59,7 +55,44 @@ public class CameraFilters {
 				}
 			} else {
 				device.exposureMode = .autoExpose
+				device.unlockForConfiguration()
 			}
+		} catch {
+			print("ERROR IN FILTER")
+		}
+	}
+	
+	public static func lightOnlyFilter(_ device: AVCaptureDevice, view: UIView, enabled: Bool = true) {
+		do {
+			try device.lockForConfiguration()
+			
+			if enabled {
+				// focus shift
+				device.setFocusModeLocked(lensPosition: 0.001) { CMTime in
+					device.unlockForConfiguration()
+					
+					// and blur
+					let blur = UIBlurEffect(style: .regular)
+					let visualEffectView = UIVisualEffectView(effect: blur)
+					visualEffectView.frame = view.frame
+					visualEffectView.tag = 90
+					view.addSubview(visualEffectView)
+					let blur2 = UIBlurEffect(style: .dark)
+					let visualEffectView2 = UIVisualEffectView(effect: blur2)
+					visualEffectView2.frame = view.frame
+					visualEffectView2.tag = 92
+					view.addSubview(visualEffectView2)
+				}
+			} else { // disable
+				device.focusMode = .continuousAutoFocus
+				device.unlockForConfiguration()
+				for v in view.subviews {
+					if v.tag == 90 || v.tag == 92 {
+						v.removeFromSuperview()
+					}
+				}
+			}
+			
 		} catch {
 			print("ERROR IN FILTER")
 		}
@@ -71,10 +104,11 @@ public class CameraFilters {
 			let visualEffectView = UIVisualEffectView(effect: blur)
 			visualEffectView.alpha = 0.37
 			visualEffectView.frame = view.frame
+			visualEffectView.tag = 91
 			view.addSubview(visualEffectView)
 		} else {
 			for v in view.subviews {
-				if (v as? UIVisualEffectView)?.effect is UIBlurEffect {
+				if v.tag == 91 {
 					v.removeFromSuperview()
 				}
 			}

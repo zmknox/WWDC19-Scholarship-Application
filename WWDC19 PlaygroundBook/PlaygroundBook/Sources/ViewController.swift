@@ -11,7 +11,6 @@ import PlaygroundSupport
 
 public struct FilterState {
 	var startedOnce = false
-	var farSighted = false
 	var nearSighted = false
 	var lightSensitive = false
 	var noDetail = false
@@ -208,8 +207,6 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			do {
 				try videoDevice.lockForConfiguration()
 				videoDevice.activeFormat = format!
-				//videoDevice.activeVideoMinFrameDuration = (range?.minFrameDuration)!
-				//videoDevice.activeVideoMaxFrameDuration = (range?.minFrameDuration)!
 				videoDevice.unlockForConfiguration()
 			} catch {
 				return
@@ -267,13 +264,13 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 				
 				var filteredImage: CIImage = ciImage
 				if self.state.fullyColorblind {
-					let filter = CIFilter(name: "CIColorMonochrome")
+					let filter = CIFilter(name: "CIColorMonochrome") // monochrome color
 					filter?.setValue(filteredImage, forKey: "inputImage")
 					filter?.setValue(CIColor(color: .gray), forKey: "inputColor")
 					filteredImage = (filter?.outputImage)!
 				}
 				if self.state.cataract {
-					let filter = CIFilter(name: "CIDiscBlur")
+					let filter = CIFilter(name: "CIDiscBlur") // blurry
 					filter?.setValue(filteredImage, forKey: "inputImage")
 					filter?.setValue(20.0, forKey: "inputRadius")
 					filteredImage = (filter?.outputImage)!
@@ -304,8 +301,10 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 		}
 	}
 	
+	// detecting taps of the collection view
 	@objc public func tapRecognizer(_ sender: UITapGestureRecognizer?) {
 		selectionLabel.text = sender?.name?.uppercased()
+		
 		UIView.animate(withDuration: 0.2, animations: {
 			self.selectionLabel.alpha = 1
 		})
@@ -317,12 +316,7 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 		session.beginConfiguration()
 		switch sender?.name {
 		case "Near-Sighted":
-			if state.farSighted {
-				CameraFilters.distanceFilter(videoDevice, near: false, enabled: false)
-				state.farSighted = false
-				CameraFilters.distanceFilter(videoDevice, near: true, enabled: true)
-				state.nearSighted = true
-			} else if state.nearSighted {
+			if state.nearSighted {
 				CameraFilters.distanceFilter(videoDevice, near: true, enabled: false)
 				state.nearSighted = false
 			} else {
@@ -331,7 +325,6 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			}
 		case "Light Sensitive":
 			if state.noDetail {
-				//CameraFilters.lightFilter(videoDevice, over: false, enabled: false)
 				colorOverlay!.alpha = 0
 				state.noDetail = false
 				CameraFilters.lightFilter(videoDevice, over: true, enabled: true)
@@ -355,15 +348,12 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			if state.lightSensitive {
 				CameraFilters.lightFilter(videoDevice, over: true, enabled: false)
 				state.lightSensitive = false
-				//CameraFilters.lightOnlyFilter(videoDevice, view: cameraView, enabled: true)
 				colorOverlay!.alpha = 1
 				state.noDetail = true
 			} else if state.noDetail {
-				//CameraFilters.lightOnlyFilter(videoDevice, view: cameraView, enabled: false)
 				colorOverlay!.alpha = 0
 				state.noDetail = false
 			} else {
-				//CameraFilters.lightOnlyFilter(videoDevice, view: cameraView, enabled: true)
 				colorOverlay!.alpha = 1
 				state.noDetail = true
 			}
@@ -387,13 +377,11 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 				state.noDetail = false
 			}
 			if state.cataract {
-				//CameraFilters.blurFilter(videoDevice, view: cameraView, darken: true, enabled: false)
 				state.cataract = false
 				if state.fullyColorblind == false {
 					imageOverlay!.alpha = 0
 				}
 			} else {
-				//CameraFilters.blurFilter(videoDevice, view: cameraView, darken: true, enabled: true)
 				imageOverlay!.alpha = 1
 				state.cataract = true
 			}

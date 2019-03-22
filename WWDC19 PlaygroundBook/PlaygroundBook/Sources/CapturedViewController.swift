@@ -14,10 +14,12 @@ import Photos
 public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAreaContainer {
 	
 	public var state: FilterState!
+	@IBOutlet var containingView: UIView!
 	public var photo: AVCapturePhoto!
 	@IBOutlet var imageView: UIImageView!
 	let ciContext = CIContext()
 	public var lightColor: UIColor?
+	@IBOutlet var snapLabel: UILabel!
 	
 	@IBOutlet var savedLabel: UILabel!
 	@IBOutlet var isSaving: UIActivityIndicatorView!
@@ -26,7 +28,7 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 	@IBOutlet var save: UIButton!
 	@IBAction public func saveButton(_ sender: Any) {
 		self.isSaving.startAnimating()
-		let imageRenderer = UIGraphicsImageRenderer(bounds: imageView.bounds)
+		let imageRenderer = UIGraphicsImageRenderer(bounds: containingView.bounds)
 		let savingImage = imageRenderer.image(actions: { context in
 			imageView.layer.render(in: context.cgContext)
 		})
@@ -109,11 +111,19 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 		save.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 15)
 		save.imageEdgeInsets = UIEdgeInsets(top: 0, left: -7, bottom: 0, right: 5)
 		
+		var labelArray: [String] = []
+		if state.nearSighted {
+			labelArray.append("near-signted")
+		}
+		if state.lightSensitive {
+			labelArray.append("light sensitive")
+		}
 		// Apply Filters to capture
 		if state.noDetail {
 			let subView = UIView(frame: view.frame)
 			subView.backgroundColor = lightColor
 			imageView.addSubview(subView)
+			labelArray.append("without detail")
 		}
 		if state.fullyColorblind {
 			let ciImage = CIImage(image: imageView.image!)
@@ -134,6 +144,7 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 			}
 			let cgImage = self.ciContext.createCGImage(transformedImage!, from: transformedImage!.extent)
 			imageView.image = UIImage(cgImage: cgImage!)
+			labelArray.append("colorblind")
 		}
 		if state.cataract {
 			let blur = UIBlurEffect(style: .dark)
@@ -141,6 +152,7 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 			visualEffectView.alpha = 0.37
 			visualEffectView.frame = self.view.frame
 			imageView.addSubview(visualEffectView)
+			labelArray.append("with cataracts")
 		}
 		if state.glaucoma {
 			let image = UIImage(named: "GlaucomaVisionLoss")
@@ -148,6 +160,7 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 			subView.contentMode = .scaleAspectFill
 			subView.frame = self.view.frame
 			imageView.addSubview(subView)
+			labelArray.append("with glaucoma")
 		}
 		if state.retinalDetachment {
 			let image = UIImage(named: "RetinalDetachment")
@@ -155,6 +168,7 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 			subView.contentMode = .scaleAspectFill
 			subView.frame = self.view.frame
 			imageView.addSubview(subView)
+			labelArray.append("with a detached retina")
 		}
 		if state.noCentral {
 			let image = UIImage(named: "NoCentral")
@@ -162,6 +176,7 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 			subView.contentMode = .scaleAspectFill
 			subView.frame = self.view.frame
 			imageView.addSubview(subView)
+			labelArray.append("without central vision")
 		}
 		if state.noPeripheral {
 			let image = UIImage(named: "NoPeripheral")
@@ -169,6 +184,7 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 			subView.contentMode = .scaleAspectFill
 			subView.frame = self.view.frame
 			imageView.addSubview(subView)
+			labelArray.append("without peripheral vision")
 		}
 		if state.blind {
 			let image = UIImage(named: "Blind")
@@ -176,8 +192,26 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 			subView.contentMode = .scaleAspectFill
 			subView.frame = self.view.frame
 			imageView.addSubview(subView)
+			labelArray.append("blind")
 		}
-        
+		
+		var labelTest = "My vision"
+		if labelArray.count > 0 {
+			labelTest += " but "
+		}
+		if labelArray.count == 1 {
+			labelTest += labelArray[0]
+		} else if labelArray.count == 2 {
+			labelArray.shuffle()
+			labelTest += labelArray[0] + " and " + labelArray[1]
+		} else if labelArray.count == 3 {
+			labelArray.shuffle()
+			labelTest += labelArray[0] + ", " + labelArray[1] + ", and " + labelArray[2]
+		} else if labelArray.count > 3 {
+			labelArray.shuffle()
+			labelTest += labelArray[0] + ", " + labelArray[2] + ", and more"
+		}
+		snapLabel.text = labelTest
     }
 
 }

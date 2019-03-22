@@ -44,6 +44,7 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 	
 	@IBOutlet var cameraView: CameraView!
 	public var imageOverlay: UIImageView?
+	public var colorOverlay: UIView?
 	let ciContext = CIContext()
 	
 	@IBOutlet var filterPickerCollectionView: UICollectionView!
@@ -153,6 +154,9 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 		imageOverlay?.frame = view.frame
 		imageOverlay?.alpha = 0
 		cameraView.addSubview(imageOverlay!)
+		colorOverlay = UIView(frame: view.frame)
+		colorOverlay?.alpha = 0
+		cameraView.addSubview(colorOverlay!)
 		
 		capture.setImage(UIImage(named: "Capture"), for: .normal) // TODO: FIX FOR PLAYGROUND
 	}
@@ -247,31 +251,53 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 	
 	public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
 		// filters
-		if state.fullyColorblind {
+		if state.fullyColorblind || state.cataract || state.noDetail {
 			sessionQueue.async {
+				if self.state.noDetail {
+					// Not actually using a Core Image filter, but we need the data output
+					let metadata = CFDictionaryCreateMutableCopy(nil, 0, CMCopyDictionaryOfAttachments(allocator: nil, target: sampleBuffer, attachmentMode: CMAttachmentMode(kCMAttachmentMode_ShouldPropagate))) as NSMutableDictionary
+					let exif = metadata.value(forKey: "{Exif}") as? NSMutableDictionary
+					let light = ( pow(exif!["FNumber"] as! Double, 2)) / (exif!["ExposureTime"] as! Double * ((exif!["ISOSpeedRatings"] as! NSArray)[0] as! Double))
+					let lightColor = UIColor(white: CGFloat(light), alpha: 1)
+					DispatchQueue.main.async {
+						self.colorOverlay?.backgroundColor = lightColor
+					}
+					return
+				}
+				
 				let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
 				let ciImage = CIImage(cvImageBuffer: imageBuffer!)
 				
-				let filter = CIFilter(name: "CIColorMonochrome")
-				filter?.setValue(ciImage, forKey: "inputImage")
-				let filteredImage = filter?.outputImage
+				var filteredImage: CIImage = ciImage
+				if self.state.fullyColorblind {
+					let filter = CIFilter(name: "CIColorMonochrome")
+					filter?.setValue(filteredImage, forKey: "inputImage")
+					filter?.setValue(CIColor(color: .gray), forKey: "inputColor")
+					filteredImage = (filter?.outputImage)!
+				}
+				if self.state.cataract {
+					let filter = CIFilter(name: "CIDiscBlur")
+					filter?.setValue(filteredImage, forKey: "inputImage")
+					filter?.setValue(20.0, forKey: "inputRadius")
+					filteredImage = (filter?.outputImage)!
+				}
+				
 				var transformedImage = filteredImage
 				var uiImage: UIImage
-				
 				UIDevice.current.beginGeneratingDeviceOrientationNotifications()
 				switch self.interfaceOrientation { // Using because UIDevice.current.orientation returns unknown in playgrounds
 				case .portrait:
-					transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat((3 * Double.pi)/2)))
+					transformedImage = filteredImage.transformed(by: CGAffineTransform(rotationAngle: CGFloat((3 * Double.pi)/2)))
 				case .landscapeLeft:
-					transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat(Double.pi)))
+					transformedImage = filteredImage.transformed(by: CGAffineTransform(rotationAngle: CGFloat(Double.pi)))
 				case .portraitUpsideDown:
-					transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat(Double.pi/2)))
+					transformedImage = filteredImage.transformed(by: CGAffineTransform(rotationAngle: CGFloat(Double.pi/2)))
 				default:
 					transformedImage = filteredImage
 				}
 				UIDevice.current.endGeneratingDeviceOrientationNotifications()
 
-				let cgImage = self.ciContext.createCGImage(transformedImage!, from: transformedImage!.extent)
+				let cgImage = self.ciContext.createCGImage(transformedImage, from: transformedImage.extent)
 				uiImage = UIImage(cgImage: cgImage!)
 				
 				DispatchQueue.main.async {
@@ -322,7 +348,8 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			CameraFilters.distanceFilter(videoDevice, near: false, enabled: true)
 		case "Light Sensitive":
 			if state.noDetail {
-				CameraFilters.lightFilter(videoDevice, over: false, enabled: false)
+				//CameraFilters.lightFilter(videoDevice, over: false, enabled: false)
+				colorOverlay!.alpha = 0
 				state.noDetail = false
 				CameraFilters.lightFilter(videoDevice, over: true, enabled: true)
 				state.lightSensitive = true
@@ -334,32 +361,57 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 				state.lightSensitive = true
 			}
 		case "No Detail":
-			if state.lightSensitive {
-				CameraFilters.lightFilter(videoDevice, over: true, enabled: false)
-				state.lightSensitive = false
-				CameraFilters.lightOnlyFilter(videoDevice, view: cameraView, enabled: true)
-				state.noDetail = true
-			} else if state.noDetail {
-				CameraFilters.lightOnlyFilter(videoDevice, view: cameraView, enabled: false)
-				state.noDetail = false
-			} else {
-				CameraFilters.lightOnlyFilter(videoDevice, view: cameraView, enabled: true)
-				state.noDetail = true
-			}
-		case "Fully Colorblind":
 			if state.fullyColorblind {
 				imageOverlay!.alpha = 0
 				state.fullyColorblind = false
+			}
+			if state.cataract {
+				imageOverlay!.alpha = 0
+				state.cataract = false
+			}
+			if state.lightSensitive {
+				CameraFilters.lightFilter(videoDevice, over: true, enabled: false)
+				state.lightSensitive = false
+				//CameraFilters.lightOnlyFilter(videoDevice, view: cameraView, enabled: true)
+				colorOverlay!.alpha = 1
+				state.noDetail = true
+			} else if state.noDetail {
+				//CameraFilters.lightOnlyFilter(videoDevice, view: cameraView, enabled: false)
+				colorOverlay!.alpha = 0
+				state.noDetail = false
+			} else {
+				//CameraFilters.lightOnlyFilter(videoDevice, view: cameraView, enabled: true)
+				colorOverlay!.alpha = 1
+				state.noDetail = true
+			}
+		case "Fully Colorblind":
+			if state.noDetail {
+				colorOverlay!.alpha = 0
+				state.noDetail = false
+			}
+			if state.fullyColorblind {
+				state.fullyColorblind = false
+				if state.cataract == false {
+					imageOverlay!.alpha = 0
+				}
 			} else {
 				imageOverlay!.alpha = 1
 				state.fullyColorblind = true
 			}
 		case "Cataract":
+			if state.noDetail {
+				colorOverlay!.alpha = 0
+				state.noDetail = false
+			}
 			if state.cataract {
-				CameraFilters.blurFilter(videoDevice, view: cameraView, darken: true, enabled: false)
+				//CameraFilters.blurFilter(videoDevice, view: cameraView, darken: true, enabled: false)
 				state.cataract = false
+				if state.fullyColorblind == false {
+					imageOverlay!.alpha = 0
+				}
 			} else {
-				CameraFilters.blurFilter(videoDevice, view: cameraView, darken: true, enabled: true)
+				//CameraFilters.blurFilter(videoDevice, view: cameraView, darken: true, enabled: true)
+				imageOverlay!.alpha = 1
 				state.cataract = true
 			}
 		case "No Peripheral Vision":
@@ -540,6 +592,7 @@ extension ViewController: AVCapturePhotoCaptureDelegate {
 			let vc = self.storyboard?.instantiateViewController(withIdentifier: "captured") as? CapturedViewController
 			vc?.photo = photo
 			vc?.state = self.state
+			vc?.lightColor = self.colorOverlay?.backgroundColor
 			self.present(vc!, animated: false, completion: nil)
 		}
 	}

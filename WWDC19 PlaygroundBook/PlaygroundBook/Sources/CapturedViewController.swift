@@ -17,6 +17,7 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 	public var photo: AVCapturePhoto!
 	@IBOutlet var imageView: UIImageView!
 	let ciContext = CIContext()
+	public var lightColor: UIColor?
 	
 	@IBOutlet var savedLabel: UILabel!
 	@IBOutlet var isSaving: UIActivityIndicatorView!
@@ -109,6 +110,11 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 		save.imageEdgeInsets = UIEdgeInsets(top: 0, left: -7, bottom: 0, right: 5)
 		
 		// Apply Filters to capture
+		if state.noDetail {
+			let subView = UIView(frame: view.frame)
+			subView.backgroundColor = lightColor
+			imageView.addSubview(subView)
+		}
 		if state.fullyColorblind {
 			let ciImage = CIImage(image: imageView.image!)
 			

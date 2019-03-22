@@ -33,7 +33,7 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 
 	private var state = FilterState()
 	
-	private let session = AVCaptureSession()
+	private var session: AVCaptureSession!
 	
 	private let sessionQueue = DispatchQueue(label: "session queue") // Communicate with the session and other session objects on this queue.
 	
@@ -166,11 +166,8 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 		sessionQueue.async {
 			switch AVCaptureDevice.authorizationStatus(for: .video) {
 			case .authorized: // The user has previously granted access to the camera.
-				if self.state.startedOnce {
-					self.session.startRunning()
-				} else {
-					self.setupSession()
-				}
+				self.session = AVCaptureSession()
+				self.setupSession()
 			case .notDetermined: // The user has not yet been asked for camera access.
 				AVCaptureDevice.requestAccess(for: .video) { granted in
 					if granted {
@@ -211,8 +208,8 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			do {
 				try videoDevice.lockForConfiguration()
 				videoDevice.activeFormat = format!
-				videoDevice.activeVideoMinFrameDuration = (range?.minFrameDuration)!
-				videoDevice.activeVideoMaxFrameDuration = (range?.minFrameDuration)!
+				//videoDevice.activeVideoMinFrameDuration = (range?.minFrameDuration)!
+				//videoDevice.activeVideoMaxFrameDuration = (range?.minFrameDuration)!
 				videoDevice.unlockForConfiguration()
 			} catch {
 				return
@@ -332,20 +329,6 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 				CameraFilters.distanceFilter(videoDevice, near: true, enabled: true)
 				state.nearSighted = true
 			}
-		case "Far-Sighted":
-			if state.nearSighted {
-				CameraFilters.distanceFilter(videoDevice, near: true, enabled: false)
-				state.nearSighted = false
-				CameraFilters.distanceFilter(videoDevice, near: false, enabled: true)
-				state.farSighted = true
-			} else if state.farSighted {
-				CameraFilters.distanceFilter(videoDevice, near: false, enabled: false)
-				state.farSighted = false
-			} else {
-				CameraFilters.distanceFilter(videoDevice, near: false, enabled: true)
-				state.farSighted = true
-			}
-			CameraFilters.distanceFilter(videoDevice, near: false, enabled: true)
 		case "Light Sensitive":
 			if state.noDetail {
 				//CameraFilters.lightFilter(videoDevice, over: false, enabled: false)
@@ -466,7 +449,7 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 	// MARK: Collection View
 	public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return 11 // TODO
+		return 10 // TODO
 	}
 	
 	public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -485,14 +468,6 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 				cell.imageView.image = UIImage(named: "DistanceDisabled")
 			}
 		case 1:
-			cell.name = "Far-Sighted"
-			cell.tapRecognizer.name = "Far-Sighted"
-			if state.farSighted {
-				cell.imageView.image = UIImage(named: "Distance")
-			} else {
-				cell.imageView.image = UIImage(named: "DistanceDisabled")
-			}
-		case 2:
 			cell.name = "Light Sensitive"
 			cell.tapRecognizer.name = "Light Sensitive"
 			if state.lightSensitive {
@@ -500,14 +475,15 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 			} else {
 				cell.imageView.image = UIImage(named: "LightDisabled")
 			}
-		case 3:
+		case 2:
 			cell.name = "No Detail"
 			cell.tapRecognizer.name = "No Detail"
 			if state.noDetail {
-				cell.imageView.image = UIImage(named: "Light")
+				cell.imageView.image = UIImage(named: "NoDetailCV")
 			} else {
-				cell.imageView.image = UIImage(named: "LightDisabled")
-			}		case 4:
+				cell.imageView.image = UIImage(named: "NoDetailCVDisabled")
+			}
+	  	case 3:
 			cell.name = "Fully Colorblind"
 			cell.tapRecognizer.name = "Fully Colorblind"
 			if state.fullyColorblind {
@@ -515,7 +491,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 			} else {
 				cell.imageView.image = UIImage(named: "ColorblindDisabled")
 			}
-		case 5:
+		case 4:
 			cell.name = "Cataract"
 			cell.tapRecognizer.name = "Cataract"
 			if state.cataract {
@@ -523,7 +499,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 			} else {
 				cell.imageView.image = UIImage(named: "CataractsDisabled")
 			}
-		case 6:
+		case 5:
 			cell.name = "No Peripheral Vision"
 			cell.tapRecognizer.name = "No Peripheral Vision"
 			if state.noPeripheral {
@@ -531,7 +507,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 			} else {
 				cell.imageView.image = UIImage(named: "NoPeripheralCVDisabled")
 			}
-		case 7:
+		case 6:
 			cell.name = "No Central Vision"
 			cell.tapRecognizer.name = "No Central Vision"
 			if state.noCentral {
@@ -539,7 +515,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 			} else {
 				cell.imageView.image = UIImage(named: "NoCentralCVDisabled")
 			}
-		case 8:
+		case 7:
 			cell.name = "Glaucoma"
 			cell.tapRecognizer.name = "Glaucoma"
 			if state.glaucoma {
@@ -547,7 +523,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 			} else {
 				cell.imageView.image = UIImage(named: "GlaucomaCVDisabled")
 			}
-		case 9:
+		case 8:
 			cell.name = "Retinal Detachment"
 			cell.tapRecognizer.name = "Retinal Detachment"
 			if state.retinalDetachment {
@@ -555,7 +531,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 			} else {
 				cell.imageView.image = UIImage(named: "RetinalDetachmentCVDisabled")
 			}
-		case 10:
+		case 9:
 			cell.name = "Blind"
 			cell.tapRecognizer.name = "Blind"
 			if state.blind {

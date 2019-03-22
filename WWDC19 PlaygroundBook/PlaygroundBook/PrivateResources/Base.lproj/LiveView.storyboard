@@ -43,19 +43,19 @@
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="DUv-Qv-lqZ">
                                 <rect key="frame" x="0.0" y="600" width="375" height="67"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.38131421230000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.20061001712328766" alpha="0.38131421230000001" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="67" id="Uq7-zI-KhO"/>
                                 </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="taX-tp-WR9">
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="15" id="taX-tp-WR9">
                                     <size key="itemSize" width="55" height="55"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FilterCell" id="awK-OK-fx8" customClass="Book_Sources_FilterCollectionViewCelll">
-                                        <rect key="frame" x="10" y="6" width="55" height="55"/>
+                                        <rect key="frame" x="15" y="6" width="55" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="55" height="55"/>

@@ -43,17 +43,13 @@ public class CameraFilters {
 			
 			if enabled {
 				if over {
+					device.exposureMode = .custom
 					device.setExposureModeCustom(duration: device.activeFormat.maxExposureDuration, iso: device.activeFormat.maxISO, completionHandler: { (CMTime) in
-						device.unlockForConfiguration()
-					})
-				} else {
-					// act like blind w/ blur and light level detection
-					device.setExposureModeCustom(duration: device.activeFormat.minExposureDuration, iso: AVCaptureDevice.currentISO, completionHandler: { (CMTime) in
 						device.unlockForConfiguration()
 					})
 				}
 			} else {
-				device.exposureMode = .autoExpose
+				device.exposureMode = .continuousAutoExposure
 				device.unlockForConfiguration()
 			}
 		} catch {

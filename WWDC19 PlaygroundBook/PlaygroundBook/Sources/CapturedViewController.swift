@@ -30,7 +30,7 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 		self.isSaving.startAnimating()
 		let imageRenderer = UIGraphicsImageRenderer(bounds: containingView.bounds)
 		let savingImage = imageRenderer.image(actions: { context in
-			imageView.layer.render(in: context.cgContext)
+			containingView.layer.render(in: context.cgContext)
 		})
 		PHPhotoLibrary.requestAuthorization { status in
 			switch status {
@@ -133,6 +133,7 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 			
 			let filter = CIFilter(name: "CIColorMonochrome")
 			filter?.setValue(ciImage, forKey: "inputImage")
+			filter?.setValue(CIColor(color: .gray), forKey: "inputColor")
 			let filteredImage = filter?.outputImage
 			var transformedImage = filteredImage
 			switch self.interfaceOrientation { // Using because UIDevice.current.orientation returns unknown in playgrounds
@@ -150,11 +151,26 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 			labelArray.append("colorblind")
 		}
 		if state.cataract {
-			let blur = UIBlurEffect(style: .dark)
-			let visualEffectView = UIVisualEffectView(effect: blur)
-			visualEffectView.alpha = 0.37
-			visualEffectView.frame = self.view.frame
-			imageView.addSubview(visualEffectView)
+			let ciImage = CIImage(image: imageView.image!)
+			
+			let filter = CIFilter(name: "CIDiscBlur") // blurry
+			filter?.setValue(ciImage, forKey: "inputImage")
+			filter?.setValue(20.0, forKey: "inputRadius")
+			let filteredImage = filter?.outputImage
+			var transformedImage = filteredImage
+			switch self.interfaceOrientation { // Using because UIDevice.current.orientation returns unknown in playgrounds
+			case .portrait:
+				transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat((3 * Double.pi)/2)))
+			case .landscapeLeft:
+				transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat(Double.pi)))
+			case .portraitUpsideDown:
+				transformedImage = filteredImage?.transformed(by: CGAffineTransform(rotationAngle: CGFloat(Double.pi/2)))
+			default:
+				transformedImage = filteredImage
+			}
+			let cgImage = self.ciContext.createCGImage(transformedImage!, from: transformedImage!.extent)
+			imageView.image = UIImage(cgImage: cgImage!)
+			
 			labelArray.append("with cataracts")
 		}
 		if state.glaucoma {
@@ -172,6 +188,22 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 			subView.frame = self.view.frame
 			imageView.addSubview(subView)
 			labelArray.append("with a detached retina")
+		}
+		if state.macularDegeneration {
+			let image = UIImage(named: "MacularDegeneration")
+			let subView = UIImageView(image: image)
+			subView.contentMode = .scaleAspectFill
+			subView.frame = self.view.frame
+			imageView.addSubview(subView)
+			labelArray.append("with macular degeneration")
+		}
+		if state.diabeticRetinopathy {
+			let image = UIImage(named: "DiabeticRetinopathy")
+			let subView = UIImageView(image: image)
+			subView.contentMode = .scaleAspectFill
+			subView.frame = self.view.frame
+			imageView.addSubview(subView)
+			labelArray.append("with diabetic retinopathy")
 		}
 		if state.noCentral {
 			let image = UIImage(named: "NoCentral")

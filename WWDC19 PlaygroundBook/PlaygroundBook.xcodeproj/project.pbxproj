@@ -37,6 +37,8 @@
 		92CD9D9A2245BEB400EDC592 /* BlindCV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D902245BEB300EDC592 /* BlindCV@2x.png */; };
 		92CD9D9B2245BEB400EDC592 /* Cataracts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D912245BEB300EDC592 /* Cataracts@2x.png */; };
 		92CD9D9C2245BEB400EDC592 /* Colorblind@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D922245BEB300EDC592 /* Colorblind@2x.png */; };
+		92CD9D9F2246944200EDC592 /* DiabeticRetinopathyCV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D9D2246944200EDC592 /* DiabeticRetinopathyCV@2x.png */; };
+		92CD9DA02246944200EDC592 /* MacularDegenerationCV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D9E2246944200EDC592 /* MacularDegenerationCV@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -144,6 +146,8 @@
 		92CD9D902245BEB300EDC592 /* BlindCV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BlindCV@2x.png"; sourceTree = "<group>"; };
 		92CD9D912245BEB300EDC592 /* Cataracts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cataracts@2x.png"; sourceTree = "<group>"; };
 		92CD9D922245BEB300EDC592 /* Colorblind@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Colorblind@2x.png"; sourceTree = "<group>"; };
+		92CD9D9D2246944200EDC592 /* DiabeticRetinopathyCV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DiabeticRetinopathyCV@2x.png"; sourceTree = "<group>"; };
+		92CD9D9E2246944200EDC592 /* MacularDegenerationCV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MacularDegenerationCV@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,6 +283,8 @@
 				92CD9D8B2245BEB300EDC592 /* NoDetailCV@2x.png */,
 				92CD9D8D2245BEB300EDC592 /* NoPeripheralCV@2x.png */,
 				92CD9D8A2245BEB300EDC592 /* RetinalDetachmentCV@2x.png */,
+				92CD9D9D2246944200EDC592 /* DiabeticRetinopathyCV@2x.png */,
+				92CD9D9E2246944200EDC592 /* MacularDegenerationCV@2x.png */,
 			);
 			path = PrivateResources;
 			sourceTree = "<group>";
@@ -415,12 +421,14 @@
 				92CD9D932245BEB400EDC592 /* GlaucomaCV@2x.png in Resources */,
 				5EF2F97C2054B6E400191409 /* ManifestPlist.strings in Resources */,
 				92B07F9B223DB57C008D18D6 /* Assets.xcassets in Resources */,
+				92CD9D9F2246944200EDC592 /* DiabeticRetinopathyCV@2x.png in Resources */,
 				9284B28622443A6D0071EF72 /* book.png in Resources */,
 				92CD9D9C2245BEB400EDC592 /* Colorblind@2x.png in Resources */,
 				92CD9D952245BEB400EDC592 /* NoDetailCV@2x.png in Resources */,
 				92CD9D992245BEB400EDC592 /* DistanceCV@2x.png in Resources */,
 				92CD9D942245BEB400EDC592 /* RetinalDetachmentCV@2x.png in Resources */,
 				92CD9D9A2245BEB400EDC592 /* BlindCV@2x.png in Resources */,
+				92CD9DA02246944200EDC592 /* MacularDegenerationCV@2x.png in Resources */,
 				92CD9D9B2245BEB400EDC592 /* Cataracts@2x.png in Resources */,
 				92CD9D962245BEB400EDC592 /* NoCentralCV@2x.png in Resources */,
 				5E086DCA2051DDAE004D8D25 /* LiveView.storyboard in Resources */,

@@ -209,7 +209,6 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="hWc-bd-UyD" firstAttribute="centerY" secondItem="Cq7-Wb-3Ad" secondAttribute="centerY" id="0Yc-PX-ilA"/>
-                            <constraint firstItem="AA0-bY-Wia" firstAttribute="top" secondItem="vLp-gM-CT0" secondAttribute="bottom" constant="50" id="3QW-82-ctk"/>
                             <constraint firstItem="AA0-bY-Wia" firstAttribute="centerX" secondItem="Scb-KF-E7e" secondAttribute="centerX" id="AUA-c3-46G"/>
                             <constraint firstItem="Scb-KF-E7e" firstAttribute="bottom" secondItem="ATQ-mr-XLS" secondAttribute="bottom" constant="110" id="G6x-UX-ZrG"/>
                             <constraint firstItem="6yO-6q-AHZ" firstAttribute="centerX" secondItem="Scb-KF-E7e" secondAttribute="centerX" id="OCH-uo-P80"/>
@@ -218,6 +217,7 @@
                             <constraint firstItem="ATQ-mr-XLS" firstAttribute="centerX" secondItem="Scb-KF-E7e" secondAttribute="centerX" id="bwT-Tq-NK0"/>
                             <constraint firstItem="6yO-6q-AHZ" firstAttribute="top" secondItem="AA0-bY-Wia" secondAttribute="bottom" constant="8" id="eXx-Hw-H25"/>
                             <constraint firstItem="hWc-bd-UyD" firstAttribute="centerX" secondItem="Cq7-Wb-3Ad" secondAttribute="centerX" id="fpg-L8-zvO"/>
+                            <constraint firstItem="du0-BW-hmO" firstAttribute="top" secondItem="vLp-gM-CT0" secondAttribute="bottom" constant="137" id="icp-s3-Vee"/>
                             <constraint firstItem="ATQ-mr-XLS" firstAttribute="top" secondItem="6yO-6q-AHZ" secondAttribute="bottom" constant="18" id="iwN-6Q-TEA"/>
                             <constraint firstItem="6yO-6q-AHZ" firstAttribute="width" secondItem="Cq7-Wb-3Ad" secondAttribute="width" id="yNQ-ER-URZ"/>
                         </constraints>

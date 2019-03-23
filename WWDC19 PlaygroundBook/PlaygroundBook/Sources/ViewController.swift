@@ -18,6 +18,8 @@ public struct FilterState {
 	var cataract = false
 	var glaucoma = false
 	var retinalDetachment = false
+	var macularDegeneration = false
+	var diabeticRetinopathy = false
 	var noPeripheral = false
 	var noCentral = false
 	var blind = false
@@ -73,7 +75,6 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			
 			settings.isHighResolutionPhotoEnabled = true
 			
-			// TODO: Capture Photo with photoOutput, making settings and a delegate for it
 			self.photoOutput.capturePhoto(with: settings, delegate: self)
 		}
 		
@@ -146,7 +147,7 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 		super.viewDidLoad()
 		
 		liveViewSafeAreaGuide.bottomAnchor.constraint(equalTo: filterPickerCollectionView.bottomAnchor).isActive = true
-		//filterPickerCollectionView.bottomAnchor.constraint(equalTo: liveViewSafeAreaGuide.bottomAnchor).isActive = true
+
 		filterPickerCollectionView.delegate = self
 		filterPickerCollectionView.dataSource = self
 		
@@ -161,15 +162,11 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 		colorOverlay?.alpha = 0
 		cameraView.addSubview(colorOverlay!)
 		
-		capture.setImage(UIImage(named: "Capture"), for: .normal) // TODO: FIX FOR PLAYGROUND
+		capture.setImage(UIImage(named: "Capture"), for: .normal)
 	}
 
-	var delay = 2
 	override public func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-			self.delay = 0
-		}
 		switch AVCaptureDevice.authorizationStatus(for: .video) {
 		case .authorized: // The user has previously granted access to the camera.
 			self.session = AVCaptureSession()
@@ -396,7 +393,7 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "NoCentral")!, tag: 22, enabled: true)
 				state.noCentral = true
 			}
-		case "Glaucoma":
+		case "Severe Glaucoma":
 			if state.glaucoma {
 				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "GlaucomaVisionLoss")!, tag: 23, enabled: false)
 				state.glaucoma = false
@@ -411,6 +408,22 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 			} else {
 				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "RetinalDetachment")!, tag: 24, enabled: true)
 				state.retinalDetachment = true
+			}
+		case "Macular Degeneration":
+			if state.macularDegeneration {
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "MacularDegeneration")!, tag: 26, enabled: false)
+				state.macularDegeneration = false
+			} else {
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "MacularDegeneration")!, tag: 26, enabled: true)
+				state.macularDegeneration = true
+			}
+		case "Diabetic Retinopathy":
+			if state.diabeticRetinopathy {
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "DiabeticRetinopathy")!, tag: 27, enabled: false)
+				state.diabeticRetinopathy = false
+			} else {
+				CameraFilters.imageOverlayFilter(cameraView, image: UIImage(named: "DiabeticRetinopathy")!, tag: 27, enabled: true)
+				state.diabeticRetinopathy = true
 			}
 		case "Blind":
 			if state.blind {
@@ -432,7 +445,7 @@ public class ViewController: UIViewController, PlaygroundLiveViewMessageHandler,
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 	// MARK: Collection View
 	public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return 10 // TODO
+		return 12
 	}
 	
 	public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -499,8 +512,8 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 				cell.imageView.image = UIImage(named: "NoCentralCVDisabled")
 			}
 		case 7:
-			cell.name = "Glaucoma"
-			cell.tapRecognizer.name = "Glaucoma"
+			cell.name = "Severe Glaucoma"
+			cell.tapRecognizer.name = "Severe Glaucoma"
 			if state.glaucoma {
 				cell.imageView.image = UIImage(named: "GlaucomaCV")
 			} else {
@@ -515,6 +528,22 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 				cell.imageView.image = UIImage(named: "RetinalDetachmentCVDisabled")
 			}
 		case 9:
+			cell.name = "Macular Degeneration"
+			cell.tapRecognizer.name = "Macular Degeneration"
+			if state.macularDegeneration {
+				cell.imageView.image = UIImage(named: "MacularDegenerationCV")
+			} else {
+				cell.imageView.image = UIImage(named: "MacularDegenerationCVDisabled")
+			}
+		case 10:
+			cell.name = "Diabetic Retinopathy"
+			cell.tapRecognizer.name = "Diabetic Retinopathy"
+			if state.diabeticRetinopathy {
+				cell.imageView.image = UIImage(named: "DiabeticRetinopathyCV")
+			} else {
+				cell.imageView.image = UIImage(named: "DiabeticRetinopathyCVDisabled")
+			}
+		case 11:
 			cell.name = "Blind"
 			cell.tapRecognizer.name = "Blind"
 			if state.blind {

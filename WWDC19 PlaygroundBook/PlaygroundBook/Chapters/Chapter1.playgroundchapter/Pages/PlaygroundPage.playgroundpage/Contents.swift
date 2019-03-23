@@ -5,7 +5,7 @@
 #### A WWDC Scholarship Application by Zach Knox
 
 - Note:
-Make sure the Live View is open to experience this playground. You might need to press _Run My Code_ to see it.
+Make sure the Live View is open to experience this playground. You might need to tap _Run My Code_ to see it.
 
 - - -
 
@@ -50,6 +50,10 @@ experimenting with these filters, and can use them to better understand vision d
 ![Glaucoma](GlaucomaCV@2x.png) Severe Glaucoma
 
 ![Retinal Detachment](RetinalDetachmentCV@2x.png) Retinal Detachment
+
+![Macular Degeneration](MacularDegenerationCV@2x.png) Macular Degeneration
+
+![Diabetic Retinopathy](DiabeticRetinopathyCV@2x.png) Diabetic Retinopathy
 
 ![Blind](BlindCV@2x.png) Blind
 */

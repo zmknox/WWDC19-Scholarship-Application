@@ -64,6 +64,9 @@ public class CapturedViewController: UIViewController, PlaygroundLiveViewSafeAre
 			default:
 				self.isSaving.stopAnimating()
 				let alert = UIAlertController(title: "Unable to Save Photo", message: "Check the app settings to verify Photo Library access", preferredStyle: .alert)
+				alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+					alert.dismiss(animated: true, completion: nil)
+				}))
 				self.present(alert, animated: true, completion: nil)
 			}
 		}

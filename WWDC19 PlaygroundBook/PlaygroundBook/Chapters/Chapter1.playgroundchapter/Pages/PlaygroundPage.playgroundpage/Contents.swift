@@ -5,7 +5,7 @@
 #### A WWDC Scholarship Application by Zach Knox
 
 - Note:
-Make sure the Live View is open to experience this playground.
+Make sure the Live View is open to experience this playground. You might need to press _Run My Code_ to see it.
 
 - - -
 
@@ -19,9 +19,9 @@ see in Instagram Stories' camera or Snapchat. Try enabling some and see what hap
 Using these filters, you can get some idea of what it's like to have **Achromatopsia**, the eye disease
 I have in which you see with only your rods. Here are the filters to try combining:
 
-  - Near-Sighted
-  - Light Sensitive
-  - Fully Colorblind
+  - ![Near Sighted](DistanceCV@2x.png) Near-Sighted
+  - ![Light Sensitive](Light@2x.png) Light Sensitive
+  - ![Colorblind](Colorblind@2x.png) Fully Colorblind
 
 If you want to save your filtered picture, simply press the capture button above the filters. From there,
 you can preview your image, and save it to your camera roll!
@@ -29,7 +29,28 @@ you can preview your image, and save it to your camera roll!
 Vision is often seen as one of the most critical senses, but it is important to understand that many people
 see differently. These filters can help give you more perspective on what others may see. I hope you enjoy
 experimenting with these filters, and can use them to better understand vision disabilities.
-*/
-import PlaygroundSupport
 
-PlaygroundPage.current.needsIndefiniteExecution = true
+- - -
+
+##### Filter Reference
+![Near Sighted](DistanceCV@2x.png) Near-Sighted
+
+![Light Sensitive](Light@2x.png) Light Sensitive
+
+![No Detail](NoDetailCV@2x.png) No Detail
+
+![Colorblind](Colorblind@2x.png) Fully Colorblind
+
+![Cataracts](Cataracts@2x.png) Cataracts
+
+![No Peripheral](NoPeripheralCV@2x.png) No Peripheral Vision
+
+![No Central](NoCentralCV@2x.png) No Central Vision
+
+![Glaucoma](GlaucomaCV@2x.png) Severe Glaucoma
+
+![Retinal Detachment](RetinalDetachmentCV@2x.png) Retinal Detachment
+
+![Blind](BlindCV@2x.png) Blind
+*/
+

@@ -27,6 +27,16 @@
 		92B07F98223DB560008D18D6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B07F92223DB560008D18D6 /* ViewController.swift */; };
 		92B07F99223DB560008D18D6 /* CameraFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B07F93223DB560008D18D6 /* CameraFilters.swift */; };
 		92B07F9B223DB57C008D18D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92B07F9A223DB57C008D18D6 /* Assets.xcassets */; };
+		92CD9D932245BEB400EDC592 /* GlaucomaCV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D892245BEB200EDC592 /* GlaucomaCV@2x.png */; };
+		92CD9D942245BEB400EDC592 /* RetinalDetachmentCV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D8A2245BEB300EDC592 /* RetinalDetachmentCV@2x.png */; };
+		92CD9D952245BEB400EDC592 /* NoDetailCV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D8B2245BEB300EDC592 /* NoDetailCV@2x.png */; };
+		92CD9D962245BEB400EDC592 /* NoCentralCV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D8C2245BEB300EDC592 /* NoCentralCV@2x.png */; };
+		92CD9D972245BEB400EDC592 /* NoPeripheralCV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D8D2245BEB300EDC592 /* NoPeripheralCV@2x.png */; };
+		92CD9D982245BEB400EDC592 /* Light@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D8E2245BEB300EDC592 /* Light@2x.png */; };
+		92CD9D992245BEB400EDC592 /* DistanceCV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D8F2245BEB300EDC592 /* DistanceCV@2x.png */; };
+		92CD9D9A2245BEB400EDC592 /* BlindCV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D902245BEB300EDC592 /* BlindCV@2x.png */; };
+		92CD9D9B2245BEB400EDC592 /* Cataracts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D912245BEB300EDC592 /* Cataracts@2x.png */; };
+		92CD9D9C2245BEB400EDC592 /* Colorblind@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CD9D922245BEB300EDC592 /* Colorblind@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -124,6 +134,16 @@
 		92B07F92223DB560008D18D6 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		92B07F93223DB560008D18D6 /* CameraFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFilters.swift; sourceTree = "<group>"; };
 		92B07F9A223DB57C008D18D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		92CD9D892245BEB200EDC592 /* GlaucomaCV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GlaucomaCV@2x.png"; sourceTree = "<group>"; };
+		92CD9D8A2245BEB300EDC592 /* RetinalDetachmentCV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RetinalDetachmentCV@2x.png"; sourceTree = "<group>"; };
+		92CD9D8B2245BEB300EDC592 /* NoDetailCV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NoDetailCV@2x.png"; sourceTree = "<group>"; };
+		92CD9D8C2245BEB300EDC592 /* NoCentralCV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NoCentralCV@2x.png"; sourceTree = "<group>"; };
+		92CD9D8D2245BEB300EDC592 /* NoPeripheralCV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NoPeripheralCV@2x.png"; sourceTree = "<group>"; };
+		92CD9D8E2245BEB300EDC592 /* Light@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Light@2x.png"; sourceTree = "<group>"; };
+		92CD9D8F2245BEB300EDC592 /* DistanceCV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DistanceCV@2x.png"; sourceTree = "<group>"; };
+		92CD9D902245BEB300EDC592 /* BlindCV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BlindCV@2x.png"; sourceTree = "<group>"; };
+		92CD9D912245BEB300EDC592 /* Cataracts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cataracts@2x.png"; sourceTree = "<group>"; };
+		92CD9D922245BEB300EDC592 /* Colorblind@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Colorblind@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,6 +269,16 @@
 				92B07F9A223DB57C008D18D6 /* Assets.xcassets */,
 				5EF2F97E2054B6E400191409 /* ManifestPlist.strings */,
 				5E086DCC2051DDAE004D8D25 /* LiveView.storyboard */,
+				92CD9D902245BEB300EDC592 /* BlindCV@2x.png */,
+				92CD9D912245BEB300EDC592 /* Cataracts@2x.png */,
+				92CD9D922245BEB300EDC592 /* Colorblind@2x.png */,
+				92CD9D8F2245BEB300EDC592 /* DistanceCV@2x.png */,
+				92CD9D892245BEB200EDC592 /* GlaucomaCV@2x.png */,
+				92CD9D8E2245BEB300EDC592 /* Light@2x.png */,
+				92CD9D8C2245BEB300EDC592 /* NoCentralCV@2x.png */,
+				92CD9D8B2245BEB300EDC592 /* NoDetailCV@2x.png */,
+				92CD9D8D2245BEB300EDC592 /* NoPeripheralCV@2x.png */,
+				92CD9D8A2245BEB300EDC592 /* RetinalDetachmentCV@2x.png */,
 			);
 			path = PrivateResources;
 			sourceTree = "<group>";
@@ -380,9 +410,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92CD9D972245BEB400EDC592 /* NoPeripheralCV@2x.png in Resources */,
+				92CD9D982245BEB400EDC592 /* Light@2x.png in Resources */,
+				92CD9D932245BEB400EDC592 /* GlaucomaCV@2x.png in Resources */,
 				5EF2F97C2054B6E400191409 /* ManifestPlist.strings in Resources */,
 				92B07F9B223DB57C008D18D6 /* Assets.xcassets in Resources */,
 				9284B28622443A6D0071EF72 /* book.png in Resources */,
+				92CD9D9C2245BEB400EDC592 /* Colorblind@2x.png in Resources */,
+				92CD9D952245BEB400EDC592 /* NoDetailCV@2x.png in Resources */,
+				92CD9D992245BEB400EDC592 /* DistanceCV@2x.png in Resources */,
+				92CD9D942245BEB400EDC592 /* RetinalDetachmentCV@2x.png in Resources */,
+				92CD9D9A2245BEB400EDC592 /* BlindCV@2x.png in Resources */,
+				92CD9D9B2245BEB400EDC592 /* Cataracts@2x.png in Resources */,
+				92CD9D962245BEB400EDC592 /* NoCentralCV@2x.png in Resources */,
 				5E086DCA2051DDAE004D8D25 /* LiveView.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

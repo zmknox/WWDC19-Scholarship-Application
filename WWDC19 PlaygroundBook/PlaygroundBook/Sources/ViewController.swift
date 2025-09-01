@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  WWDC19App
 //
-//  Copyright © 2019 Zachary Knox. All rights reserved.
+//  Copyright © 2019 Zoe Knox. All rights reserved.
 //
 
 import UIKit

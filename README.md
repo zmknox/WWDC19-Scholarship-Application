@@ -1,5 +1,5 @@
 # Vision Disability Filters Camera
-### WWDC 2019 Scholarship Application by Zachary Knox -- __Accepted__
+### WWDC 2019 Scholarship Application by Zoe Knox -- __Accepted__
 
 ---
 

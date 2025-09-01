@@ -2,8 +2,8 @@
 //  CapturedViewController.swift
 //  WWDC19App
 //
-//  Created by Zach Knox on 3/16/19.
-//  Copyright © 2019 Zachary Knox. All rights reserved.
+//  Created by Zoe Knox on 3/16/19.
+//  Copyright © 2019 Zoe Knox. All rights reserved.
 //
 
 import UIKit

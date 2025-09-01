@@ -2,7 +2,7 @@
 # Vision Disability Filter Camera
 ## Learn more about the symptoms of eye diseases by experiencing them with camera filters
 
-#### A WWDC Scholarship Application by Zach Knox
+#### A WWDC Scholarship Application by Zoe Knox
 
 - Note:
 Make sure the Live View is open to experience this playground. You might need to tap _Run My Code_ to see it.
